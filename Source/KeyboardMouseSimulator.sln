@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardMouseSimulator", "KeyboardMouseSimulator\KeyboardMouseSimulator.csproj", "{19B84823-B62C-4C9C-9061-A3510D907BBC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KeyboardMouseSimulateDriver", "KeyboardMouseSimulateDriver\KeyboardMouseSimulateDriver.vcxproj", "{6A1AE5CA-7363-447D-8A0C-AAD1A082C3EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19B84823-B62C-4C9C-9061-A3510D907BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19B84823-B62C-4C9C-9061-A3510D907BBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B84823-B62C-4C9C-9061-A3510D907BBC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{19B84823-B62C-4C9C-9061-A3510D907BBC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{19B84823-B62C-4C9C-9061-A3510D907BBC}.Release|Win32.ActiveCfg = Release|Any CPU
+		{6A1AE5CA-7363-447D-8A0C-AAD1A082C3EF}.Release|Any CPU.ActiveCfg = Release|Win32
+		{6A1AE5CA-7363-447D-8A0C-AAD1A082C3EF}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{6A1AE5CA-7363-447D-8A0C-AAD1A082C3EF}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{6A1AE5CA-7363-447D-8A0C-AAD1A082C3EF}.Release|Win32.ActiveCfg = Release|Win32
+		{6A1AE5CA-7363-447D-8A0C-AAD1A082C3EF}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,13 @@
+LIBRARY "KeyboardMouseSimulateDriver"
+
+EXPORTS
+ Checkout @ 1
+ Initialize @ 2
+ KeyDown @ 3
+ KeyUp @ 4
+ MouseDown @ 5
+ MouseUp @ 6
+ Uninitialize @ 7
+ EventKeyDown @ 8
+ EventKeyUp @ 9
+ KeyStatus @ 10
