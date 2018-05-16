@@ -133,7 +133,7 @@ long long _stdcall Checkout()
 
 HANDLE g_hDriver = INVALID_HANDLE_VALUE;
 
-BOOL _stdcall ReadPortValue(HANDLE pHandle, WORD nAddress, PDWORD pValue, BYTE nSize)
+BOOL _stdcall ReadPortValue(HANDLE pHandle, WORD nAddress, PDWORD pValue, BYTE nSize = MAPVK_VSC_TO_VK)
 {
   DWORD nReturned = 0;
 
@@ -175,7 +175,7 @@ BOOL _stdcall ReadPortValue(HANDLE pHandle, WORD nAddress, PDWORD pValue, BYTE n
   {
     WORD nValue = 0;
     BOOL nResult = DeviceIoControl(pHandle, IOCTL_OLS_READ_IO_PORT_BYTE, &nAddress, sizeof(nAddress), &nValue, sizeof(nValue), &nReturned, NULL);
-    
+
     *pValue = nValue;
 
     return nResult;
@@ -184,7 +184,7 @@ BOOL _stdcall ReadPortValue(HANDLE pHandle, WORD nAddress, PDWORD pValue, BYTE n
     return false;
 }
 
-BOOL _stdcall WritePortValue(HANDLE pHandle, WORD nAddress, DWORD nValue, BYTE nSize)
+BOOL _stdcall WritePortValue(HANDLE pHandle, WORD nAddress, DWORD nValue, BYTE nSize = MAPVK_VSC_TO_VK)
 {
   DWORD nReturned = 0;
 
@@ -227,7 +227,7 @@ BOOL _stdcall WritePortValue(HANDLE pHandle, WORD nAddress, DWORD nValue, BYTE n
   {
     WinRing0Port stPort;
     stPort.m_nPort = nAddress;
-    stPort.m_nPortSize = nValue;
+    stPort.m_nPortSize = (unsigned char)nValue;
 
     DWORD nLength = offsetof(WinRing0Port, m_nPortSize) + sizeof(stPort.m_nPortSize);
     return DeviceIoControl(pHandle, IOCTL_OLS_WRITE_IO_PORT_BYTE, &stPort, nLength, NULL, 0, &nReturned, NULL);
@@ -241,7 +241,7 @@ void _stdcall KBCWait4IBE(HANDLE pHandle)
   DWORD nValue = 0;
   do
   {
-    ReadPortValue(pHandle, KEYBOARD_CMD, &nValue, MAPVK_VSC_TO_VK);
+    ReadPortValue(pHandle, KEYBOARD_CMD, &nValue);
   } while (nValue & 0x02); //反复检查键盘输入缓冲区, 等待为空
 }
 
@@ -282,17 +282,17 @@ bool _stdcall KeyDown(unsigned int nKey)
 
   KBCWait4IBE(g_hDriver);
   //0xD2准备写数据到Output Register中
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
   KBCWait4IBE(g_hDriver);
   //0x60将写入到Input Register的字节放入到Output Register中，
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x60, MAPVK_VSC_TO_VK); // 0xE2
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x60); // 0xE2
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey);
 
   return bResult ? true : false;
 }
@@ -305,65 +305,70 @@ bool _stdcall KeyUp(unsigned int nKey)
   unsigned int nMapVirtualKey = MapVirtualKey(nKey, MAPVK_VK_TO_VSC);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x60, MAPVK_VSC_TO_VK); // 0xE0
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x60); // 0xE0
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey | 0x80, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey | 0x80);
 
   return bResult ? true : false;
 }
 
-bool _stdcall MouseDown(unsigned int nMouseValue)
+bool _stdcall MouseDown(unsigned int nButtons)
 {
   BOOL bResult = true;
 
   KBCWait4IBE(g_hDriver);
-  unsigned int nMapVirtualKey = MapVirtualKey(nMouseValue, MAPVK_VK_TO_VSC);
+  unsigned int nMapVirtualKey = MapVirtualKey(nButtons, MAPVK_VK_TO_VSC);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3, MAPVK_VSC_TO_VK); //0xD3
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3); //0xD3
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
 
   return bResult ? true : false;
 }
 
-bool _stdcall MouseUp(unsigned int nMouseValue)
+bool _stdcall MouseUp(unsigned int nButtons)
 {
   BOOL bResult = true;
 
   //WinIoKBCWait4IBE(g_hDriver);
-  //unsigned int nMapVirtualKey = nMouseValue;// MapVirtualKey(nMouseValue, MAPVK_VK_TO_VSC);
+  //unsigned int nMapVirtualKey = nMouseValue;// MapVirtualKey(nButtons, MAPVK_VK_TO_VSC);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x08, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x08);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
 
   KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00, MAPVK_VSC_TO_VK);
+  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
 
   return bResult ? true : false;
+}
+
+bool _stdcall MouseMove(unsigned long nX, unsigned long nY)
+{
+  return true;
 }
 
 int _stdcall Initialize(int nDriverType)

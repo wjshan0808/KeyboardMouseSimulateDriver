@@ -124,7 +124,7 @@ struct WinIoPort
 
 #pragma pack(push, 4)
 
-typedef struct WinRing0Port
+struct WinRing0Port
 {
   ULONG	m_nPort;
   union

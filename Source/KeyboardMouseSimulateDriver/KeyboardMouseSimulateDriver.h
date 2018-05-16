@@ -28,8 +28,9 @@ extern "C"
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API int _stdcall Initialize(int nDriverType);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall KeyDown(unsigned int nKey);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall KeyUp(unsigned int nKey);
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall MouseDown(unsigned int nMouseValue);
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall MouseUp(unsigned int nMouseValue);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall MouseDown(unsigned int nButtons);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall MouseUp(unsigned int nButtons);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall MouseMove(unsigned long nX, unsigned long nY);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall Uninitialize();
 };
 

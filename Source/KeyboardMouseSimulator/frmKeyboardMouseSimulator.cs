@@ -218,21 +218,6 @@ namespace KeyboardMouseSimulator
       }
     }
 
-    struct Parameters
-    {
-      public int m_nPeriod;
-      public int m_nDuration;
-      public int m_nInterval;
-      public uint m_nMouseValue;
-      public uint m_nKeyboardValue;
-    }
-
-    enum KeyboardWays
-    {
-      Event,
-      WinIo
-    }
-
     private void tsmiEventKeyboard_Click(object sender, EventArgs e)
     {
       ToolStripMenuItem tsmi = sender as ToolStripMenuItem;
