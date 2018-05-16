@@ -1,0 +1,46 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove %CONTEXTMENUCLSID% = s '%PROJECTNAME% ContextMenu Handler'
+		{
+			ForceRemove InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	%PROJECTNAME% = s '%DESCRIPTION%'
+	{
+		ShellEx
+		{
+			ContextMenuHandlers
+			{
+				%CONTEXTMENUCLSID% = s '%PROJECTNAME% ContextMenu Handler'
+			}
+		}
+	}
+}
+
+HKLM
+{
+	NoRemove Software
+	{
+		NoRemove Microsoft
+		{
+			NoRemove Windows
+			{
+				NoRemove CurrentVersion
+				{
+					NoRemove 'Shell Extensions'
+					{
+						NoRemove Approved
+						{
+							ForceRemove val %CONTEXTMENUCLSID% = s '%PROJECTNAME% ContextMenu Handler'
+						}
+					}
+				}
+			}
+		}
+	}
+}

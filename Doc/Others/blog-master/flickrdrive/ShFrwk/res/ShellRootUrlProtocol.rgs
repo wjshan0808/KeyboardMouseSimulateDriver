@@ -1,0 +1,10 @@
+HKCR
+{
+	%URLPROTOCOL% = s '%DISPLAYNAME% Protocol'
+	{
+		val FriendlyTypeName = s '%DISPLAYNAME%'
+		val ShellFolder = s '%CLSID%'
+		val 'URL Protocol' = s ''
+	}
+}
+

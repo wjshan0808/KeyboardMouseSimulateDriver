@@ -8,18 +8,26 @@
 #define KEYBOARD_MOUSE_SIMULATE_DRIVER_API __declspec(dllimport)
 #endif
 
+struct Position
+{
+  long nX;
+  long nY;
+};
 
 extern "C"
 {
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API long long _stdcall Checkout();
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API int _stdcall Initialize();
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API short _stdcall KeyStatus(unsigned int nKey);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall CursorPosition(Position& stPosition, bool bGetOrSet);
 
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API short _stdcall KeyStatus(unsigned int nKeyValue);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall EventKeyDown(unsigned int nKey);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall EventKeyUp(unsigned int nKey);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall EventMouseButton(unsigned long nButtons);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall EventMouseMove(unsigned long nX, unsigned long nY);
 
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall KeyDown(unsigned int nKeyValue);
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall KeyUp(unsigned int nKeyValue);
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall EventKeyDown(unsigned int nKeyValue);
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall EventKeyUp(unsigned int nKeyValue);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API int _stdcall Initialize(int nDriverType);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall KeyDown(unsigned int nKey);
+  KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall KeyUp(unsigned int nKey);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall MouseDown(unsigned int nMouseValue);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall MouseUp(unsigned int nMouseValue);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall Uninitialize();

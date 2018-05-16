@@ -17,9 +17,9 @@ namespace KeyboardMouseSimulator
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static int Initialize();
 
+
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static short KeyStatus(uint nKeyValue);
-
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static bool KeyDown(uint nKeyValue);
@@ -39,11 +39,12 @@ namespace KeyboardMouseSimulator
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static bool MouseUp(uint nMouseValue);
 
+
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static void Uninitialize();
   }
 
-  public enum MouseEventFlag : uint
+  public enum MouseButtons
   {
     Move = 0x0001,
     LeftDown = 0x0002,

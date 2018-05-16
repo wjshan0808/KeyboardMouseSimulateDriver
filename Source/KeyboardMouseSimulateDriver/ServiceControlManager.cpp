@@ -19,8 +19,8 @@ bool CServiceControlManager::Create(const wchar_t* szServiceFile, const wchar_t*
 
   //https://msdn.microsoft.com/en-us/library/windows/desktop/ms682450(v=vs.85).aspx
   SC_HANDLE hService = CreateService(hSCManager, szServiceName, szServiceName,
-    SERVICE_ALL_ACCESS, SERVICE_KERNEL_DRIVER, SERVICE_DEMAND_START, SERVICE_ERROR_NORMAL,
-    szServiceFile, NULL, NULL, NULL, NULL, NULL);
+    SERVICE_ALL_ACCESS, SERVICE_KERNEL_DRIVER, SERVICE_DEMAND_START /* SERVICE_AUTO_START */, 
+    SERVICE_ERROR_NORMAL, szServiceFile, NULL, NULL, NULL, NULL, NULL);
 
   if (NULL == hService)
   {

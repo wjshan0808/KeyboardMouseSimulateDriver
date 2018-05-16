@@ -1,0 +1,215 @@
+
+#include "resource.h"
+
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+#include "../ShFrwk/shfrwkres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE  
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE  
+BEGIN
+    "#include ""winres.h""\r\n"
+    "#include ""../ShFrwk/shfrwkres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "3 RT_MANIFEST ""res\\\\TarFolder.dll.manifest""\r\n"
+    "#include ""../ShFrwk/ShFrwk.rc""\r\n"
+    "#include ""../ShFrwk/NseFilePropPages.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#ifndef _MAC
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_APP                 ICON    DISCARDABLE     "res/Folder.ico"
+ID_COMMAND_EXTRACT      ICON    DISCARDABLE     "res/Extract.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_FOLDER MENU DISCARDABLE 
+BEGIN
+    POPUP "ContextMenu"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Extract",                     ID_FILE_EXTRACT
+        MENUITEM SEPARATOR
+        POPUP "&New"
+        BEGIN
+            MENUITEM "&Folder",                  ID_FILE_NEWFOLDER
+        END
+    END
+    POPUP "ViewMenu"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Extract",                     ID_FILE_EXTRACT
+        MENUITEM SEPARATOR
+        POPUP "&New"
+        BEGIN
+            MENUITEM "&Folder",                  ID_FILE_NEWFOLDER
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Properties",                  ID_FILE_PROPERTIES
+    END
+    POPUP "CommandMenu"
+    BEGIN
+        MENUITEM "&Extract",                     ID_COMMAND_EXTRACT
+    END
+    POPUP "ExplorerMenu"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Extract all...",              ID_FILE_EXTRACT
+    END
+END
+
+IDM_FILE MENU DISCARDABLE 
+BEGIN
+    POPUP "ContextMenu"
+    BEGIN
+        MENUITEM "&Open",                        ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "&Extract",                     ID_FILE_EXTRACT
+    END
+    POPUP "CommandMenu"
+    BEGIN
+        MENUITEM "&Extract",                     ID_COMMAND_EXTRACT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+   IDS_NSE_PROJNAME        "TarFolder"
+   IDS_NSE_DISPLAYNAME     "Tar folder"
+   IDS_NSE_DESCRIPTION     "Tar Shell Extension"
+   IDS_NSE_FILEEXTENSION   ".tar"
+   IDS_NSE_VENDOR          "www.viksoe.dk"
+   IDS_NSE_VOLUME          "Tar Archive"
+   IDS_NSE_URLPROTOCOL     "xxx"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+   ID_FILE_OPEN            "Open document\nopen"
+   ID_FILE_NEWFOLDER       "Create a new folder\nNewFolder"
+   ID_FILE_PROPERTIES      "Show document properties\nproperties"
+   ID_FILE_EXTRACT         "Extract file(s) from TAR Archive\nextract"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+   IDS_EXTRACTTITLE        "Extract file(s) from TAR folder to..."
+   IDS_NEWFOLDER           "New Folder"
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "viksoe.dk"
+            VALUE "FileDescription", "TAR Folder Shell Extension"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "LegalCopyright", "Copyright (C) 2009 viksoe.dk All rights reserved."
+            VALUE "InternalName", "TarFolder.dll"
+            VALUE "OriginalFilename", "TarFolder.dll"
+            VALUE "ProductName", "TarFolder"
+            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "OLESelfRegister", ""
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+            VALUE "Translation", 0x0409, 1252
+    END
+END
+
+#endif    // !_MAC
+
+////////////////////////////////////////////////////////////////////////////
+
+#endif
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+3 RT_MANIFEST "res\\TarFolder.dll.manifest"
+#include "../ShFrwk/ShFrwk.rc"
+#include "../ShFrwk/NseFilePropPages.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+

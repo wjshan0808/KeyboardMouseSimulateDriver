@@ -1,0 +1,11 @@
+HKCR
+{
+	%LOCATION% = s '%PROJECTNAME%'
+	{
+		ForceRemove ShellNew
+		{
+			val Command = s 'RUNDLL32 %MODULE%,ShellNew %%2'
+		}
+	}
+}
+

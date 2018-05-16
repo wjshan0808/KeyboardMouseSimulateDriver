@@ -86,7 +86,7 @@ namespace KeyboardMouseSimulator
         stParameter.m_nMouseValue = 0x02;// 0x0A;//
       else
         stParameter.m_nMouseValue = 0x0C;
-
+      
       m_trdKeyboardInterval = new System.Threading.Thread(Simulate);
       m_trdKeyboardInterval.IsBackground = false;
       m_trdKeyboardInterval.Priority = System.Threading.ThreadPriority.AboveNormal;

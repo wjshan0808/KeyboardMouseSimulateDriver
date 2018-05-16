@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\ShFrwk">
+      <UniqueIdentifier>{e500a13d-f4e3-4662-aece-3fd6c6a32f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\ShFrwk Headers">
+      <UniqueIdentifier>{6c97fcab-21dc-4876-b1c1-f836c18a77ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RegFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegFolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegItemKey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegItemValue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\CategoryProvider.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\CommandProvider.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\ContextMenu.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\DataObject.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\DllMain.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\DropTarget.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\EnumIDList.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\FileStream.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\IdentityName.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\LaunchFile.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\NseBaseItem.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\NseFileItem.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\NseFilePropPages.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\NseFileSystem.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\PropertyStore.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\PropSheetExt.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\QueryInfo.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\SendTo.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\ShellFolder.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\ShUtils.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShFrwk\TransferItem.cpp">
+      <Filter>Source Files\ShFrwk</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RegFolder.def">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellFolder.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellLocJunction.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellLocRooted.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellRootContextMenu.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellRootDropTarget.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellRootPreview.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellRootPropSheet.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellRootSendTo.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\ShFrwk\res\ShellRootShellNew.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RegFolder.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RegFileSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\CategoryProvider.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\CommandProvider.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\ContextMenu.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\DataObject.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\DropTarget.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\EnumIDList.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\FileStream.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\IdentityName.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\LaunchFile.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\NseFileSystem.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\PropertyStore.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\PropSheetExt.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\QueryInfo.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\SendTo.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\ShellExt.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\ShellExt2.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\ShellFolder.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\ShFrwk.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\shfrwkres.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\ShUtils.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\TransferItem.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShFrwk\WebPreviewHandler.h">
+      <Filter>Header Files\ShFrwk Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Folder.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\regedit_205.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\regedit_206.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\properties.xslt">
+      <Filter>Resource Files</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="res\RegFolder.dll.manifest">
+      <Filter>Resource Files</Filter>
+    </Manifest>
+  </ItemGroup>
+</Project>

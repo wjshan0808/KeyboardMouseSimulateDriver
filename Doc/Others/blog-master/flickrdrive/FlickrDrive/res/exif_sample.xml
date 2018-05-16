@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rsp stat="ok">
+<photo id="3395801621" secret="235910378f" server="3442" farm="4">
+	<exif tagspace="ExifTool" tagspaceid="0" tag="ExifToolVersion" label="ExifToolVersion">
+		<raw>7.60</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="FileName" label="FileName">
+		<raw>ORI23306221.img</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="Directory" label="Directory">
+		<raw>/home/y/tmp/7</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="FileSize" label="File Size">
+		<raw>120 kB</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="FileModifyDate" label="FileModifyDate">
+		<raw>2009:03:29 21:16:10+00:00</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="FileType" label="File Type">
+		<raw>JPEG</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="MIMEType" label="MIME Type">
+		<raw>image/jpeg</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="ImageWidth" label="Image Width">
+		<raw>1024</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="ImageHeight" label="Image Height">
+		<raw>810</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="EncodingProcess" label="Encoding Process">
+		<raw>Baseline DCT, Huffman coding</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="BitsPerSample" label="Bits Per Sample">
+		<raw>8</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="ColorComponents" label="Color Components">
+		<raw>3</raw>
+	</exif>
+	<exif tagspace="File" tagspaceid="0" tag="YCbCrSubSampling" label="YCbCrSubSampling">
+		<raw>YCbCr4:2:0 (2 2)</raw>
+	</exif>
+	<exif tagspace="JFIF" tagspaceid="0" tag="JFIFVersion" label="JFIFVersion">
+		<raw>1.01</raw>
+	</exif>
+	<exif tagspace="JFIF" tagspaceid="0" tag="ResolutionUnit" label="ResolutionUnit">
+		<raw>inches</raw>
+	</exif>
+	<exif tagspace="JFIF" tagspaceid="0" tag="XResolution" label="X-Resolution">
+		<raw>96</raw>
+		<clean>96 dpi</clean>
+	</exif>
+	<exif tagspace="JFIF" tagspaceid="0" tag="YResolution" label="Y-Resolution">
+		<raw>96</raw>
+		<clean>96 dpi</clean>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ProfileCMMType" label="ProfileCMMType">
+		<raw>Lino</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ProfileVersion" label="ProfileVersion">
+		<raw>2.1.0</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ProfileClass" label="ProfileClass">
+		<raw>Display Device Profile</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ColorSpaceData" label="ColorSpaceData">
+		<raw>RGB </raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ProfileConnectionSpace" label="ProfileConnectionSpace">
+		<raw>XYZ </raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ProfileDateTime" label="ProfileDateTime">
+		<raw>1998:02:09 06:49:00</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ProfileFileSignature" label="ProfileFileSignature">
+		<raw>acsp</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="PrimaryPlatform" label="PrimaryPlatform">
+		<raw>Microsoft Corporation</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="CMMFlags" label="CMMFlags">
+		<raw>Not Embedded, Independent</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="DeviceManufacturer" label="DeviceManufacturer">
+		<raw>IEC </raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="DeviceModel" label="DeviceModel">
+		<raw>sRGB</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="DeviceAttributes" label="DeviceAttributes">
+		<raw>Reflective, Glossy, Positive, Color</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="RenderingIntent" label="RenderingIntent">
+		<raw>Perceptual</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ConnectionSpaceIlluminant" label="ConnectionSpaceIlluminant">
+		<raw>0.9642 1 0.82491</raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ProfileCreator" label="ProfileCreator">
+		<raw>HP  </raw>
+	</exif>
+	<exif tagspace="ICC-header" tagspaceid="0" tag="ProfileID" label="ProfileID">
+		<raw>0</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="ProfileCopyright" label="ProfileCopyright">
+		<raw>Copyright (c) 1998 Hewlett-Packard Company</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="ProfileDescription" label="ProfileDescription">
+		<raw>sRGB IEC61966-2.1</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="MediaWhitePoint" label="MediaWhitePoint">
+		<raw>0.95045 1 1.08905</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="MediaBlackPoint" label="MediaBlackPoint">
+		<raw>0 0 0</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="RedMatrixColumn" label="RedMatrixColumn">
+		<raw>0.43607 0.22249 0.01392</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="GreenMatrixColumn" label="GreenMatrixColumn">
+		<raw>0.38515 0.71687 0.09708</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="BlueMatrixColumn" label="BlueMatrixColumn">
+		<raw>0.14307 0.06061 0.7141</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="DeviceMfgDesc" label="DeviceMfgDesc">
+		<raw>IEC http://www.iec.ch</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="DeviceModelDesc" label="DeviceModelDesc">
+		<raw>IEC 61966-2.1 Default RGB colour space - sRGB</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="ViewingCondDesc" label="ViewingCondDesc">
+		<raw>Reference Viewing Condition in IEC61966-2.1</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="Luminance" label="Luminance">
+		<raw>76.03647 80 87.12462</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="Technology" label="Technology">
+		<raw>Cathode Ray Tube Display</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="RedTRC" label="RedTRC">
+		<raw>(Binary data 2060 bytes)</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="GreenTRC" label="GreenTRC">
+		<raw>(Binary data 2060 bytes)</raw>
+	</exif>
+	<exif tagspace="ICC_Profile" tagspaceid="0" tag="BlueTRC" label="BlueTRC">
+		<raw>(Binary data 2060 bytes)</raw>
+	</exif>
+	<exif tagspace="ICC-view" tagspaceid="0" tag="ViewingCondIlluminant" label="ViewingCondIlluminant">
+		<raw>19.6445 20.3718 16.8089</raw>
+	</exif>
+	<exif tagspace="ICC-view" tagspaceid="0" tag="ViewingCondSurround" label="ViewingCondSurround">
+		<raw>3.92889 4.07439 3.36179</raw>
+	</exif>
+	<exif tagspace="ICC-view" tagspaceid="0" tag="ViewingCondIlluminantType" label="Viewing Conditions Illuminant Type">
+		<raw>D50</raw>
+	</exif>
+	<exif tagspace="ICC-meas" tagspaceid="0" tag="MeasurementObserver" label="Measurement Observer">
+		<raw>CIE 1931</raw>
+	</exif>
+	<exif tagspace="ICC-meas" tagspaceid="0" tag="MeasurementBacking" label="MeasurementBacking">
+		<raw>0 0 0</raw>
+	</exif>
+	<exif tagspace="ICC-meas" tagspaceid="0" tag="MeasurementGeometry" label="MeasurementGeometry">
+		<raw>Unknown (0)</raw>
+	</exif>
+	<exif tagspace="ICC-meas" tagspaceid="0" tag="MeasurementFlare" label="Measurement Flare">
+		<raw>0.999%</raw>
+	</exif>
+	<exif tagspace="ICC-meas" tagspaceid="0" tag="MeasurementIlluminant" label="Measurement Illuminant">
+		<raw>D65</raw>
+	</exif>
+	<exif tagspace="Composite" tagspaceid="0" tag="ImageSize" label="ImageSize">
+		<raw>1024x810</raw>
+	</exif>
+</photo>
+</rsp>

@@ -1,0 +1,43 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove %DROPTARGETCLSID% = s '%PROJECTNAME% Drop Handler'
+		{
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	%PROJECTNAME% = s '%DESCRIPTION%'
+	{
+		ShellEx
+		{
+			ForceRemove DropHandler = s '%DROPTARGETCLSID%'
+		}
+	}
+}
+
+HKLM
+{
+	NoRemove Software
+	{
+		NoRemove Microsoft
+		{
+			NoRemove Windows
+			{
+				NoRemove CurrentVersion
+				{
+					NoRemove 'Shell Extensions'
+					{
+						NoRemove Approved
+						{
+							ForceRemove val %DROPTARGETCLSID% = s '%PROJECTNAME% Drop Handler'
+						}
+					}
+				}
+			}
+		}
+	}
+}

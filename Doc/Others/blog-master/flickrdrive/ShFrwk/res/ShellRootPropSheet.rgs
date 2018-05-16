@@ -1,0 +1,58 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove %PROPERTYSHEETCLSID% = s '%PROJECTNAME% Property Sheet'
+		{
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+		%CLSID% = s '%DESCRIPTION%'
+		{
+			ShellEx
+			{
+				PropertySheetHandlers
+				{
+					%PROPERTYSHEETCLSID% = s '%PROJECTNAME% Property Sheet'
+					{883373C3-BF89-11D1-BE35-080036B11A03} = s 'Summary Properties Page'
+				}
+			}
+		}
+	}
+	%PROJECTNAME% = s '%DESCRIPTION%'
+	{
+		ShellEx
+		{
+			PropertySheetHandlers
+			{
+				%PROPERTYSHEETCLSID% = s '%PROJECTNAME% Property Sheet'
+				{883373C3-BF89-11D1-BE35-080036B11A03} = s 'Summary Properties Page'
+			}
+		}
+	}
+}
+
+HKLM
+{
+	NoRemove Software
+	{
+		NoRemove Microsoft
+		{
+			NoRemove Windows
+			{
+				NoRemove CurrentVersion
+				{
+					NoRemove 'Shell Extensions'
+					{
+						NoRemove Approved
+						{
+							ForceRemove val %PROPERTYSHEETCLSID% = s '%PROJECTNAME% Property Sheet'
+						}
+					}
+				}
+			}
+		}
+	}
+}
