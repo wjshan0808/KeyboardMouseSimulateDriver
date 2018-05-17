@@ -7,6 +7,9 @@ using System.Text;
 namespace KeyboardMouseSimulator
 {
 
+
+  public delegate ulong CheckoutDeletage();
+
   public enum MouseButtons
   {
     Move = 0x0001,
@@ -22,26 +25,31 @@ namespace KeyboardMouseSimulator
     VirtualDesk = 0x4000,
     Absolute = 0x8000
   }
-    
-  public struct Position
-  {
-    long nX;
-    long nY;
-  }
 
   public struct Parameters
   {
     public int m_nPeriod;
     public int m_nDuration;
     public int m_nInterval;
-    public uint m_nMouseValue;
-    public uint m_nKeyboardValue;
+    public uint m_nKeyCode;
+    public uint m_nMouseButton;
   }
 
-  public enum KeyboardWays
+  public enum SimulateWays
   {
+    Unknow = 0,
     WinRing0 = 1,
-    WinIo = 2,
+    WinIo = 2
+  }
+
+  [StructLayout(LayoutKind.Sequential)]
+  public struct Position
+  {
+    long nX;
+    long nY;
+
+    //[MarshalAs(UnmanagedType.LPWStr)]
+    //public string Name;
   }
 
   public class KeyboardMouseSimulateDriver
@@ -94,5 +102,23 @@ namespace KeyboardMouseSimulator
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static void Uninitialize();
+
+
+    [DllImport("kernel32.dll")]
+    public extern static IntPtr LoadLibrary(string strFileName);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public extern static bool FreeLibrary(IntPtr nModule);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = false)]
+    public extern static IntPtr GetProcAddress(IntPtr nModule, [MarshalAs(UnmanagedType.LPStr)] string strProcName);
+
+    public Delegate GetDelegate(IntPtr nMoudle, string strProcName, Type procType)
+    {
+      IntPtr ptr = GetProcAddress(nMoudle, strProcName);
+      if (IntPtr.Zero != ptr)
+        return Marshal.GetDelegateForFunctionPointer(ptr, procType);
+      return null;
+    }
   }
 }

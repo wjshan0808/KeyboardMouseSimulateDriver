@@ -16,7 +16,7 @@ namespace KeyboardMouseSimulator
     private System.Threading.Thread m_trdKeyboardInterval = null;
     private volatile bool m_bChecking = false;
     private volatile bool m_bInitialized = false;
-    private KeyboardWays m_nKeyboardWay = KeyboardWays.WinIo;
+    private SimulateWays m_nKeyboardWay = SimulateWays.Unknow;
 
     public frmKeyboardMouseSimulator()
     {
@@ -26,16 +26,22 @@ namespace KeyboardMouseSimulator
 
     private void frmGlobalKeyboardSet_FormClosing(object sender, FormClosingEventArgs e)
     {
-      m_bInitialized = false;
       m_bChecking = false;
       if (m_trdKeyboardInterval != null)
       {
         m_trdKeyboardInterval.Abort();
         m_trdKeyboardInterval.Join();
       }
+      Clear();
+    }
+
+    private void Clear()
+    {
       KeyboardMouseSimulateDriver.Uninitialize();
       Application.DoEvents();
+      m_bInitialized = false;
     }
+
 
     private void frmGlobalKeyboardSet_Load(object sender, EventArgs e)
     {
@@ -74,19 +80,19 @@ namespace KeyboardMouseSimulator
       stParameter.m_nInterval = (int)nudIntervalMS.Value;
 
       if (rdobtnKeyO.Checked)
-        stParameter.m_nKeyboardValue = (uint)Keys.O;
+        stParameter.m_nKeyCode = (uint)Keys.O;
       else if (rdobtnKeyG.Checked)
-        stParameter.m_nKeyboardValue = (uint)Keys.G;
-      else
-        stParameter.m_nKeyboardValue = 0;
+        stParameter.m_nKeyCode = (uint)Keys.G;
+      //else
+      //  stParameter.m_nKeyCode = 0;
 
-      if (rdobtnMouseLeft.Checked)
-        stParameter.m_nMouseValue = 0x09;
-      else if (rdobtnMouseRight.Checked)
-        stParameter.m_nMouseValue = 0x02;// 0x0A;//
-      else
-        stParameter.m_nMouseValue = 0x0C;
-      
+      //if (rdobtnMouseLeft.Checked)
+      //  stParameter.m_nMouseValue = 0x09;
+      //else if (rdobtnMouseRight.Checked)
+      //  stParameter.m_nMouseValue = 0x02;// 0x0A;//
+      //else
+      //  stParameter.m_nMouseValue = 0x0C;
+
       m_trdKeyboardInterval = new System.Threading.Thread(Simulate);
       m_trdKeyboardInterval.IsBackground = false;
       m_trdKeyboardInterval.Priority = System.Threading.ThreadPriority.AboveNormal;
@@ -97,7 +103,7 @@ namespace KeyboardMouseSimulator
     {
       if (m_bInitialized == false)
       {
-        int nReturn = KeyboardMouseSimulateDriver.Initialize();
+        int nReturn = KeyboardMouseSimulateDriver.Initialize((int)m_nKeyboardWay);
         m_bInitialized = nReturn == 0;
         ShowInfoBoard("Initialize", nReturn, m_bInitialized);
       }
@@ -110,7 +116,7 @@ namespace KeyboardMouseSimulator
       if (m_bInitialized)
       {
         Parameters stParameter = (Parameters)obj;
-        if (0 != stParameter.m_nKeyboardValue)
+        if (0 < stParameter.m_nKeyCode)
         {
           for (int i = 0; i < stParameter.m_nPeriod; i++)
           {
@@ -118,25 +124,17 @@ namespace KeyboardMouseSimulator
             DateTime dtStart = DateTime.Now;
             while (stParameter.m_nDuration > (DateTime.Now - dtStart).TotalSeconds)
             {
-              switch (m_nKeyboardWay)
-              {
-                case KeyboardWays.Event:
-                  ShowInfoBoard(nTimes, KeyboardMouseSimulateDriver.EventKeyDown(stParameter.m_nKeyboardValue));
-                  ShowInfoBoard(nTimes++, KeyboardMouseSimulateDriver.EventKeyUp(stParameter.m_nKeyboardValue));
-                  break;
-                case KeyboardWays.WinIo:
-                  ShowInfoBoard(nTimes, KeyboardMouseSimulateDriver.KeyDown(stParameter.m_nKeyboardValue));
-                  ShowInfoBoard(nTimes++, KeyboardMouseSimulateDriver.KeyUp(stParameter.m_nKeyboardValue));
-                  break;
-              }
+              ShowInfoBoard(-nTimes, KeyboardMouseSimulateDriver.KeyDown(stParameter.m_nKeyCode));
+              ShowInfoBoard(-nTimes++, KeyboardMouseSimulateDriver.KeyUp(stParameter.m_nKeyCode));
+
               System.Threading.Thread.Sleep(stParameter.m_nInterval);
             }
           }
         }
-        if (0 != stParameter.m_nMouseValue)
+        if (0 < stParameter.m_nMouseButton)
         {
-          ShowInfoBoard(-((int)stParameter.m_nMouseValue), KeyboardMouseSimulateDriver.MouseDown(stParameter.m_nMouseValue));
-          ShowInfoBoard(-((int)stParameter.m_nMouseValue), KeyboardMouseSimulateDriver.MouseUp(stParameter.m_nMouseValue));
+          ShowInfoBoard((int)stParameter.m_nMouseButton, KeyboardMouseSimulateDriver.MouseDown(stParameter.m_nMouseButton));
+          ShowInfoBoard((int)stParameter.m_nMouseButton, KeyboardMouseSimulateDriver.MouseUp(stParameter.m_nMouseButton));
         }
       }
       UIControl(true);
@@ -152,6 +150,7 @@ namespace KeyboardMouseSimulator
           btnSimulate.Text = "Simulate";
         else
           btnSimulate.Text = "Wroking ...";
+
         btnSimulate.Enabled = bEnabled;
       }
     }
@@ -162,6 +161,7 @@ namespace KeyboardMouseSimulator
         new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Unspecified).AddSeconds(nCheckout).ToString("yyyy-MM-dd HH:mm:ss");
       ShowCheckout(strCheckout);
     }
+
     private void ShowCheckout(string strCheckout)
     {
       if (lblCheckout.InvokeRequired)
@@ -180,11 +180,12 @@ namespace KeyboardMouseSimulator
 
       ShowInfoBoard(strResult);
     }
+
     private void ShowInfoBoard(int nValue, bool bResult)
     {
       string strResult = string.Empty;
-      if (0 < nValue)
-        strResult = string.Format("Times {0} {1}.", nValue, bResult ? "Succeed" : "Failed");
+      if (0 > nValue)
+        strResult = string.Format("Times {0} {1}.", -nValue, bResult ? "Succeed" : "Failed");
       else
       {
         if (-1 == nValue)
@@ -218,22 +219,23 @@ namespace KeyboardMouseSimulator
       }
     }
 
-    private void tsmiEventKeyboard_Click(object sender, EventArgs e)
+    private void tsmiWinIO_Click(object sender, EventArgs e)
     {
       ToolStripMenuItem tsmi = sender as ToolStripMenuItem;
       KeyboardControl(tsmi);
-      m_nKeyboardWay = KeyboardWays.Event;
+      m_nKeyboardWay = SimulateWays.WinIo;
     }
 
-    private void tsmiWinIoKeyboard_Click(object sender, EventArgs e)
+    private void tsmiWinRing0_Click(object sender, EventArgs e)
     {
       ToolStripMenuItem tsmi = sender as ToolStripMenuItem;
       KeyboardControl(tsmi);
-      m_nKeyboardWay = KeyboardWays.WinIo;
+      m_nKeyboardWay = SimulateWays.WinRing0;
     }
 
     private void KeyboardControl(ToolStripMenuItem tsmiItem)
     {
+      Clear();
       foreach (var item in this.cmsGlobalMenu.Items)
       {
         if (item is ToolStripMenuItem)
