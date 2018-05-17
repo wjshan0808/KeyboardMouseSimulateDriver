@@ -1,9 +1,0 @@
-E:\gh\KeyboardMouseSimulateDriver\Release\WinFormGlobalKeyboard.exe.config
-E:\gh\KeyboardMouseSimulateDriver\Release\WinFormGlobalKeyboard.exe
-E:\gh\KeyboardMouseSimulateDriver\Release\WinFormGlobalKeyboard.pdb
-E:\gh\KeyboardMouseSimulateDriver\Temp\Release\KeyboardMouseSimulator.csprojResolveAssemblyReference.cache
-E:\gh\KeyboardMouseSimulateDriver\Temp\Release\KeyboardMouseSimulator.frmKeyboardMouseSimulator.resources
-E:\gh\KeyboardMouseSimulateDriver\Temp\Release\KeyboardMouseSimulator.Properties.Resources.resources
-E:\gh\KeyboardMouseSimulateDriver\Temp\Release\KeyboardMouseSimulator.csproj.GenerateResource.Cache
-E:\gh\KeyboardMouseSimulateDriver\Temp\Release\WinFormGlobalKeyboard.exe
-E:\gh\KeyboardMouseSimulateDriver\Temp\Release\WinFormGlobalKeyboard.pdb
