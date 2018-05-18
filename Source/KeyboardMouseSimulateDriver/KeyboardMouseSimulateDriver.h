@@ -20,11 +20,6 @@ extern "C"
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API short _stdcall KeyStatus(unsigned int nKey);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall CursorPosition(Position& stPosition, bool bGetOrSet);
 
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall EventKeyDown(unsigned int nKey);
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall EventKeyUp(unsigned int nKey);
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall EventMouseButton(unsigned long nButtons);
-  KEYBOARD_MOUSE_SIMULATE_DRIVER_API void _stdcall EventMouseMove(unsigned long nX, unsigned long nY);
-
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API int _stdcall Initialize(int nDriverType);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall KeyDown(unsigned int nKey);
   KEYBOARD_MOUSE_SIMULATE_DRIVER_API bool _stdcall KeyUp(unsigned int nKey);

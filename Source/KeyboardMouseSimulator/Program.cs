@@ -18,7 +18,7 @@ namespace KeyboardMouseSimulator
       Application.ThreadException += Application_ThreadException;
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      using (frmKeyboardMouseSimulator frm = new frmKeyboardMouseSimulator())
+      using (frmKeyboardMouseSimulatorDemo frm = new frmKeyboardMouseSimulatorDemo())
         Application.Run(frm);
     }
 

@@ -6,6 +6,7 @@
 #include <winioctl.h>
 
 
+#define TYPE_DRIVER_EVENT           0x03
 #define TYPE_DRIVER_WINIO           0x02
 #define TYPE_DRIVER_WINRING0        0x01
 

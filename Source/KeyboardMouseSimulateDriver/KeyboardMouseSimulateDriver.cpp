@@ -100,7 +100,10 @@ short _stdcall KeyStatus(unsigned int nKey)
   //https://msdn.microsoft.com/zh-cn/library/ms646301.aspx
   return GetKeyState(nKey);
 }
-//bGetOrSet : True->Get, False->Set
+
+/*
+ *  bGetOrSet : True->Get, False->Set
+ */
 void _stdcall CursorPosition(Position& stPosition, bool bGetOrSet)
 {
   //Set mouse speed, see https://msdn.microsoft.com/en-us/library/ms724947(v=vs.85).aspx
@@ -245,9 +248,10 @@ void _stdcall KBCWait4IBE(HANDLE pHandle)
   } while (nValue & 0x02); //反复检查键盘输入缓冲区, 等待为空
 }
 
+
 void _stdcall Uninitialize()
 {
-  if (INVALID_HANDLE_VALUE != g_hDriver)
+  if (TYPE_DRIVER_EVENT != g_nDriverType && INVALID_HANDLE_VALUE != g_hDriver)
   {
     // Disable I/O port access if running on a 32 bit OS
     if (TYPE_DRIVER_WINIO == g_nDriverType)
@@ -269,30 +273,38 @@ void _stdcall Uninitialize()
 
   CServiceControlManager::Stop(g_szDriverId);
   CServiceControlManager::Delete(g_szDriverId);
+
+  g_hDriver = INVALID_HANDLE_VALUE;
 }
 
 bool _stdcall KeyDown(unsigned int nKey)
 {
-  //此功能被用来模拟来自于Keyboard发送的数据, 如果中断被允许, 则会触发一个中断处理.
   BOOL bResult = true;
-  //Keydown
-  KBCWait4IBE(g_hDriver);
+  //Keydown 
   //https://msdn.microsoft.com/en-us/library/ms646306(VS.85).aspx
   unsigned int nMapVirtualKey = MapVirtualKey(nKey, MAPVK_VK_TO_VSC);
 
-  KBCWait4IBE(g_hDriver);
-  //0xD2准备写数据到Output Register中
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
+  if (TYPE_DRIVER_EVENT == g_nDriverType)
+  {
+    //https://msdn.microsoft.com/en-us/library/ms646304(VS.85).aspx
+    keybd_event((unsigned char)nKey, (unsigned char)nMapVirtualKey, 0, 0);
+  }
+  else
+  {
+    KBCWait4IBE(g_hDriver);
+    //0xD2准备写数据到Output Register中
+    bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
-  KBCWait4IBE(g_hDriver);
-  //0x60将写入到Input Register的字节放入到Output Register中，
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x60); // 0xE2
+    KBCWait4IBE(g_hDriver);
+    //0x60将写入到Input Register的字节放入到Output Register中，
+    bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0xE2); // 0x60); //
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
+    KBCWait4IBE(g_hDriver);
+    bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey);
+    KBCWait4IBE(g_hDriver);
+    bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey);
+  }
 
   return bResult ? true : false;
 }
@@ -301,20 +313,28 @@ bool _stdcall KeyUp(unsigned int nKey)
 {
   BOOL bResult = true;
   //Keyup
-  KBCWait4IBE(g_hDriver);
+  //https://msdn.microsoft.com/en-us/library/ms646306(VS.85).aspx
   unsigned int nMapVirtualKey = MapVirtualKey(nKey, MAPVK_VK_TO_VSC);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
+  if (TYPE_DRIVER_EVENT == g_nDriverType)
+  {
+    //https://msdn.microsoft.com/en-us/library/ms646304(VS.85).aspx
+    keybd_event((unsigned char)nKey, (unsigned char)nMapVirtualKey, KEYEVENTF_KEYUP, 0);
+  }
+  else
+  {
+    KBCWait4IBE(g_hDriver);
+    bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x60); // 0xE0
+    KBCWait4IBE(g_hDriver);
+    bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0xE0); // 0x60); //
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
+    KBCWait4IBE(g_hDriver);
+    bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey | 0x80);
+    KBCWait4IBE(g_hDriver);
+    bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey | 0x80);
+  }
 
   return bResult ? true : false;
 }
@@ -323,23 +343,25 @@ bool _stdcall MouseDown(unsigned int nButtons)
 {
   BOOL bResult = true;
 
-  KBCWait4IBE(g_hDriver);
-  unsigned int nMapVirtualKey = MapVirtualKey(nButtons, MAPVK_VK_TO_VSC);
+  if (TYPE_DRIVER_EVENT == g_nDriverType)
+  {
+    //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
+    mouse_event(nButtons | MOUSEEVENTF_ABSOLUTE, 0, 0, 0, 0);
+  }
+  else
+  {
+    //KBCWait4IBE(g_hDriver);
+    //unsigned int nMapVirtualKey = MapVirtualKey(nButtons, MAPVK_VK_TO_VSC);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3); //0xD3
+    //KBCWait4IBE(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey);
+    //KBCWait4IBE(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
-
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
-
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
+    //KBCWait4IBE(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
+  }
 
   return bResult ? true : false;
 }
@@ -348,32 +370,58 @@ bool _stdcall MouseUp(unsigned int nButtons)
 {
   BOOL bResult = true;
 
-  //WinIoKBCWait4IBE(g_hDriver);
-  //unsigned int nMapVirtualKey = nMouseValue;// MapVirtualKey(nButtons, MAPVK_VK_TO_VSC);
+  if (TYPE_DRIVER_EVENT == g_nDriverType)
+  {
+    //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
+    mouse_event(nButtons | MOUSEEVENTF_ABSOLUTE, 0, 0, 0, 0);
+  }
+  else
+  {
+    //KBCWait4IBE(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
+    //KBCWait4IBE(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x08);
 
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x08);
-
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
-
-  KBCWait4IBE(g_hDriver);
-  bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
+    //KBCWait4IBE(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
+  }
 
   return bResult ? true : false;
 }
 
+/*
+* About Parameters x & y
+* mouse move is between [0, 65535];
+* if you want to move by logical pixels of desktop,
+* you need caculate map between (x / MaxXPixelsOfDesktop * 65535) or (y / MaxYPixelsOfDesktop * 65535)
+*/
 bool _stdcall MouseMove(unsigned long nX, unsigned long nY)
 {
+  if (TYPE_DRIVER_EVENT == g_nDriverType)
+  {
+    //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
+    //https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385(v=vs.85).aspx
+    mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE
+      , static_cast<unsigned long>(nX * 1.0F / GetSystemMetrics(SM_CXSCREEN) * 65535)
+      , static_cast<unsigned long>(nY * 1.0F / GetSystemMetrics(SM_CYSCREEN) * 65535)
+      , 0, 0);
+  }
+  else
+  {
+
+  }
+  
   return true;
 }
 
 int _stdcall Initialize(int nDriverType)
 {
   g_nDriverType = nDriverType;
+
+  if (TYPE_DRIVER_EVENT == g_nDriverType)
+    return 0;
+
   g_bIs64Bits = Is64Bits();
 
   wchar_t szDriverFile[MAX_PATH * 2] = { 0 };
@@ -442,50 +490,6 @@ int _stdcall Initialize(int nDriverType)
   }
 
   return 0;
-}
-
-#pragma endregion
-
-
-#pragma region keybd_event & mouse_event
-
-void _stdcall EventKeyDown(unsigned int nKey)
-{
-  //Keydown 
-  unsigned int nMapVirtualKey = MapVirtualKey(nKey, MAPVK_VK_TO_VSC);
-
-  //https://msdn.microsoft.com/en-us/library/ms646304(VS.85).aspx
-  keybd_event((unsigned char)nKey, (unsigned char)nMapVirtualKey, 0, 0);
-}
-
-void _stdcall EventKeyUp(unsigned int nKey)
-{
-  //Keyup 
-  unsigned int nMapVirtualKey = MapVirtualKey(nKey, MAPVK_VK_TO_VSC);
-
-  keybd_event((unsigned char)nKey, (unsigned char)nMapVirtualKey, KEYEVENTF_KEYUP, 0);
-}
-
-void _stdcall EventMouseButton(unsigned long nButtons)
-{
-  //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
-  mouse_event(nButtons | MOUSEEVENTF_ABSOLUTE, 0, 0, 0, 0);
-}
-
-void _stdcall EventMouseMove(unsigned long nX, unsigned long nY)
-{
-  /*
-   * About Parameters x & y
-   * mouse move is between [0, 65535];
-   * if you want to move by logical pixels of desktop,
-   * you need caculate map between (x/MaxXPixelsOfDesktop * 65535) or (y/MaxYPixelsOfDesktop * 65535)
-   */
-  //https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385(v=vs.85).aspx
-  //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
-  mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE
-    , static_cast<unsigned long>(nX * 1.0F / GetSystemMetrics(SM_CXSCREEN) * 65535)
-    , static_cast<unsigned long>(nY * 1.0F / GetSystemMetrics(SM_CYSCREEN) * 65535)
-    , 0, 0);
 }
 
 #pragma endregion
