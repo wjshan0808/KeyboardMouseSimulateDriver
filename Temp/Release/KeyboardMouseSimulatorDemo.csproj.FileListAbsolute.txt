@@ -1,8 +1,0 @@
-D:\github\KeyboardMouseSimulateDriver\Release\WinFormGlobalKeyboard.exe.config
-D:\github\KeyboardMouseSimulateDriver\Release\WinFormGlobalKeyboard.exe
-D:\github\KeyboardMouseSimulateDriver\Release\WinFormGlobalKeyboard.pdb
-D:\github\KeyboardMouseSimulateDriver\Temp\Release\KeyboardMouseSimulator.frmKeyboardMouseSimulatorDemo.resources
-D:\github\KeyboardMouseSimulateDriver\Temp\Release\KeyboardMouseSimulator.Properties.Resources.resources
-D:\github\KeyboardMouseSimulateDriver\Temp\Release\KeyboardMouseSimulatorDemo.csproj.GenerateResource.Cache
-D:\github\KeyboardMouseSimulateDriver\Temp\Release\WinFormGlobalKeyboard.exe
-D:\github\KeyboardMouseSimulateDriver\Temp\Release\WinFormGlobalKeyboard.pdb
