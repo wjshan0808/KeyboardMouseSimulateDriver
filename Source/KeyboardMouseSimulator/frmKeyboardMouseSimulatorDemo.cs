@@ -60,8 +60,8 @@ namespace KeyboardMouseSimulator
     private void btnMouseOperate_Click(object sender, EventArgs e)
     {
       if (SimulateWays.Unknow == m_nSimulateWay)
-      {
-        MessageBox.Show("请右键菜单选择模拟方式...");
+      { 
+        ShowInfoBoard("请右键菜单选择模拟方式...");
         return;
       }
 
@@ -81,8 +81,8 @@ namespace KeyboardMouseSimulator
       }
 
       Parameters stParameter = new Parameters();
-      stParameter.m_nCursorPositionX = (uint)nudCursorPositionY.Value;
-      stParameter.m_nCursorPositionY = (uint)nudCursorPositionX.Value;
+      stParameter.m_nCursorPositionX = (uint)nudCursorPositionX.Value;
+      stParameter.m_nCursorPositionY = (uint)nudCursorPositionY.Value;
 
       if (rdobtnMouseLeft.Checked)
         stParameter.m_nMouseButtons = KeyboardMouseSimulator.MouseButtons.LeftDown;
@@ -104,13 +104,13 @@ namespace KeyboardMouseSimulator
         int nReturn = KeyboardMouseSimulateDriverAPI.Initialize((int)m_nSimulateWay);
         m_bInitialized = (0 == nReturn);
         ShowInfoBoard("Initialize", nReturn, m_bInitialized);
+        System.Threading.Thread.Sleep(1000);
       }
 
-      System.Threading.Thread.Sleep(1000);
       ShowInfoBoard("Ready...");
       System.Threading.Thread.Sleep(1000);
       ShowInfoBoard("Go ! ! !");
-      System.Threading.Thread.Sleep(1000);
+      System.Threading.Thread.Sleep(256);
 
       if (m_bInitialized)
       {
@@ -149,7 +149,7 @@ namespace KeyboardMouseSimulator
     {
       if (SimulateWays.Unknow == m_nSimulateWay)
       {
-        MessageBox.Show("请右键菜单选择模拟方式...");
+        ShowInfoBoard("请右键菜单选择模拟方式...");
         return;
       }
 
@@ -306,25 +306,25 @@ namespace KeyboardMouseSimulator
       {
         case KeyboardMouseSimulator.MouseButtons.LeftDown:
         case KeyboardMouseSimulator.MouseButtons.LeftUp:
-          strResult = string.Format("Simulate Mouse {0} Button", "Left");
+          strResult = string.Format("Simulate Mouse '{0}' Button", "Left");
           break;
         case KeyboardMouseSimulator.MouseButtons.RightDown:
         case KeyboardMouseSimulator.MouseButtons.RightUp:
-          strResult = string.Format("Simulate Mouse {0} Button", "Right");
+          strResult = string.Format("Simulate Mouse '{0}' Button", "Right");
           break;
         case KeyboardMouseSimulator.MouseButtons.MiddleDown:
         case KeyboardMouseSimulator.MouseButtons.MiddleUp:
-          strResult = string.Format("Simulate Mouse {0} Button", "Middle");
+          strResult = string.Format("Simulate Mouse '{0}' Button", "Middle");
           break;
         case KeyboardMouseSimulator.MouseButtons.XDown:
         case KeyboardMouseSimulator.MouseButtons.XUp:
-          strResult = string.Format("Simulate Mouse {0} Button", "X");
+          strResult = string.Format("Simulate Mouse '{0}' Button", "X");
           break;
         case KeyboardMouseSimulator.MouseButtons.Wheel:
-          strResult = string.Format("Simulate Mouse {0} ", "Wheel");
+          strResult = string.Format("Simulate Mouse '{0}'", "Wheel");
           break;
         case KeyboardMouseSimulator.MouseButtons.Move:
-          strResult = string.Format("Simulate Mouse {0} ", "Move");
+          strResult = string.Format("Simulate Mouse '{0}'", "Move");
           break;
       }
 

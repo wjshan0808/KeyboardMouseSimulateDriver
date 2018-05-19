@@ -389,21 +389,21 @@ bool _stdcall MouseUp(unsigned int nButtons)
   return bResult ? true : false;
 }
 
+/*
+* About Parameters x & y
+* mouse move is between [0, 65535];
+* if you want to move by logical pixels of desktop,
+* you need caculate map between (x / MaxXPixelsOfDesktop * 65535) or (y / MaxYPixelsOfDesktop * 65535)
+*/
 bool _stdcall MouseMove(unsigned int nX, unsigned int nY)
 {
-  /*
-  * About Parameters x & y
-  * mouse move is between [0, 65535];
-  * if you want to move by logical pixels of desktop,
-  * you need caculate map between (x / MaxXPixelsOfDesktop * 65535) or (y / MaxYPixelsOfDesktop * 65535)
-  */
   if (TYPE_DRIVER_EVENT == g_nDriverType)
   {
     //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
     //https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385(v=vs.85).aspx
     mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE,
-      static_cast<unsigned int>(nX * 1.0F / GetSystemMetrics(SM_CXSCREEN) * 65535),
-      static_cast<unsigned int>(nY * 1.0F / GetSystemMetrics(SM_CYSCREEN) * 65535),
+      static_cast<unsigned int>(nX * 65535.F / GetSystemMetrics(SM_CXSCREEN)),
+      static_cast<unsigned int>(nY * 65535.F / GetSystemMetrics(SM_CYSCREEN)),
       0, 0);
   }
   else

@@ -6,9 +6,15 @@ using System.Text;
 
 namespace KeyboardMouseSimulator
 {
-
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <returns></returns>
   public delegate ulong CheckoutDeletage();
 
+  /// <summary>
+  /// 鼠标按键
+  /// </summary>
   public enum MouseButtons
   {
     Move = 0x0001,
@@ -25,6 +31,9 @@ namespace KeyboardMouseSimulator
     Absolute = 0x8000
   }
 
+  /// <summary>
+  /// 参数
+  /// </summary>
   public struct Parameters
   {
     public int m_nPeriod;
@@ -37,6 +46,9 @@ namespace KeyboardMouseSimulator
     public MouseButtons m_nMouseButtons;
   }
 
+  /// <summary>
+  /// 模拟方式
+  /// </summary>
   public enum SimulateWays
   {
     Unknow = 0x00,
@@ -45,6 +57,9 @@ namespace KeyboardMouseSimulator
     Event = 0x03
   }
 
+  /// <summary>
+  /// 位置坐标
+  /// </summary>
   [StructLayout(LayoutKind.Sequential)]
   public struct Position
   {
@@ -55,6 +70,9 @@ namespace KeyboardMouseSimulator
     //public string Name;
   }
 
+  /// <summary>
+  /// APIs
+  /// </summary>
   public class KeyboardMouseSimulateDriverAPI
   {
     private const string DriverFileName = "KeyboardMouseSimulateDriver.dll";

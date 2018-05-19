@@ -46,6 +46,7 @@
       this.lblDuration = new System.Windows.Forms.Label();
       this.nudDurationS = new System.Windows.Forms.NumericUpDown();
       this.gbMouse = new System.Windows.Forms.GroupBox();
+      this.rdobtnMouseMove = new System.Windows.Forms.RadioButton();
       this.btnMouseOperate = new System.Windows.Forms.Button();
       this.nudCursorPositionY = new System.Windows.Forms.NumericUpDown();
       this.nudCursorPositionX = new System.Windows.Forms.NumericUpDown();
@@ -54,7 +55,6 @@
       this.lblCurrentCursorPositionXY = new System.Windows.Forms.Label();
       this.rdobtnMouseRight = new System.Windows.Forms.RadioButton();
       this.rdobtnMouseLeft = new System.Windows.Forms.RadioButton();
-      this.rdobtnMouseMove = new System.Windows.Forms.RadioButton();
       ((System.ComponentModel.ISupportInitialize)(this.nudIntervalMS)).BeginInit();
       this.gbKeyboard.SuspendLayout();
       this.cmsSimulateWayMenu.SuspendLayout();
@@ -134,8 +134,6 @@
       // 
       // gbKeyboard
       // 
-      this.gbKeyboard.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
       this.gbKeyboard.ContextMenuStrip = this.cmsSimulateWayMenu;
       this.gbKeyboard.Controls.Add(this.rdobtnKeyG);
       this.gbKeyboard.Controls.Add(this.rdobtnKeyO);
@@ -295,6 +293,19 @@
       this.gbMouse.TabStop = false;
       this.gbMouse.Text = "eg. Mouse";
       // 
+      // rdobtnMouseMove
+      // 
+      this.rdobtnMouseMove.AutoSize = true;
+      this.rdobtnMouseMove.Checked = true;
+      this.rdobtnMouseMove.Location = new System.Drawing.Point(154, 34);
+      this.rdobtnMouseMove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+      this.rdobtnMouseMove.Name = "rdobtnMouseMove";
+      this.rdobtnMouseMove.Size = new System.Drawing.Size(60, 19);
+      this.rdobtnMouseMove.TabIndex = 11;
+      this.rdobtnMouseMove.TabStop = true;
+      this.rdobtnMouseMove.Text = "Move";
+      this.rdobtnMouseMove.UseVisualStyleBackColor = true;
+      // 
       // btnMouseOperate
       // 
       this.btnMouseOperate.Location = new System.Drawing.Point(257, 75);
@@ -318,6 +329,11 @@
       this.nudCursorPositionY.Name = "nudCursorPositionY";
       this.nudCursorPositionY.Size = new System.Drawing.Size(95, 25);
       this.nudCursorPositionY.TabIndex = 8;
+      this.nudCursorPositionY.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
       // 
       // nudCursorPositionX
       // 
@@ -331,6 +347,11 @@
       this.nudCursorPositionX.Name = "nudCursorPositionX";
       this.nudCursorPositionX.Size = new System.Drawing.Size(95, 25);
       this.nudCursorPositionX.TabIndex = 7;
+      this.nudCursorPositionX.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
       // 
       // lblNewCursorPositionY
       // 
@@ -383,19 +404,6 @@
       this.rdobtnMouseLeft.TabIndex = 2;
       this.rdobtnMouseLeft.Text = "Left";
       this.rdobtnMouseLeft.UseVisualStyleBackColor = true;
-      // 
-      // rdobtnMouseMove
-      // 
-      this.rdobtnMouseMove.AutoSize = true;
-      this.rdobtnMouseMove.Checked = true;
-      this.rdobtnMouseMove.Location = new System.Drawing.Point(154, 34);
-      this.rdobtnMouseMove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-      this.rdobtnMouseMove.Name = "rdobtnMouseMove";
-      this.rdobtnMouseMove.Size = new System.Drawing.Size(60, 19);
-      this.rdobtnMouseMove.TabIndex = 11;
-      this.rdobtnMouseMove.TabStop = true;
-      this.rdobtnMouseMove.Text = "Move";
-      this.rdobtnMouseMove.UseVisualStyleBackColor = true;
       // 
       // frmKeyboardMouseSimulatorDemo
       // 
