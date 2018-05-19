@@ -8,15 +8,15 @@
 #define KEYBOARD_MOUSE_SIMULATE_DRIVER_API __declspec(dllimport)
 #endif
 
-//#pragma pack(push, 1)
-//
+#pragma pack(push, 1)
+
 //struct Position
 //{
 //  int m_nX;
 //  int m_nY;
 //};
-//
-//#pragma pack(pop)
+
+#pragma pack(pop)
 
 extern "C"
 {
