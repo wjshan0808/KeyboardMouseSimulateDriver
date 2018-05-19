@@ -104,23 +104,23 @@ short _stdcall KeyStatus(unsigned int nKey)
 /*
  *  bGetOrSet : True->Get, False->Set
  */
-void _stdcall CursorPosition(Position& stPosition, bool bGetOrSet)
+bool _stdcall CursorPosition(POINT &stPosition, bool bGetOrSet)
 {
   //Set mouse speed, see https://msdn.microsoft.com/en-us/library/ms724947(v=vs.85).aspx
+  BOOL bResult = FALSE;
 
   if (bGetOrSet)
   {
-    //https://msdn.microsoft.com/en-us/library/windows/desktop/ms648390(v=vs.85).aspx
-    POINT stPoint = { 0 };
-    GetCursorPos(&stPoint);
-    stPosition.nX = stPoint.x;
-    stPosition.nY = stPoint.y;
+    //https://msdn.microsoft.com/en-us/library/windows/desktop/ms648390(v=vs.85).aspx 
+    bResult = GetCursorPos(&stPosition);
   }
   else
   {
     //https://msdn.microsoft.com/en-us/library/windows/desktop/ms648394(v=vs.85).aspx
-    SetCursorPos(stPosition.nX, stPosition.nY);
+    bResult = SetCursorPos(stPosition.x, stPosition.y);
   }
+
+  return bResult == TRUE ? true : false;
 }
 
 long long _stdcall Checkout()
@@ -129,7 +129,6 @@ long long _stdcall Checkout()
 }
 
 #pragma endregion
-
 
 
 #pragma region Driver
@@ -390,28 +389,28 @@ bool _stdcall MouseUp(unsigned int nButtons)
   return bResult ? true : false;
 }
 
-/*
-* About Parameters x & y
-* mouse move is between [0, 65535];
-* if you want to move by logical pixels of desktop,
-* you need caculate map between (x / MaxXPixelsOfDesktop * 65535) or (y / MaxYPixelsOfDesktop * 65535)
-*/
-bool _stdcall MouseMove(unsigned long nX, unsigned long nY)
+bool _stdcall MouseMove(unsigned int nX, unsigned int nY)
 {
+  /*
+  * About Parameters x & y
+  * mouse move is between [0, 65535];
+  * if you want to move by logical pixels of desktop,
+  * you need caculate map between (x / MaxXPixelsOfDesktop * 65535) or (y / MaxYPixelsOfDesktop * 65535)
+  */
   if (TYPE_DRIVER_EVENT == g_nDriverType)
   {
     //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
     //https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385(v=vs.85).aspx
-    mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE
-      , static_cast<unsigned long>(nX * 1.0F / GetSystemMetrics(SM_CXSCREEN) * 65535)
-      , static_cast<unsigned long>(nY * 1.0F / GetSystemMetrics(SM_CYSCREEN) * 65535)
-      , 0, 0);
+    mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE,
+      static_cast<unsigned int>(nX * 1.0F / GetSystemMetrics(SM_CXSCREEN) * 65535),
+      static_cast<unsigned int>(nY * 1.0F / GetSystemMetrics(SM_CYSCREEN) * 65535),
+      0, 0);
   }
   else
   {
-
+    //
   }
-  
+
   return true;
 }
 

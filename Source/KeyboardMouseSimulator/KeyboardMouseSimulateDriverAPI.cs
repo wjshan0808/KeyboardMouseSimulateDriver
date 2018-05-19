@@ -7,7 +7,6 @@ using System.Text;
 namespace KeyboardMouseSimulator
 {
 
-
   public delegate ulong CheckoutDeletage();
 
   public enum MouseButtons
@@ -32,7 +31,10 @@ namespace KeyboardMouseSimulator
     public int m_nDuration;
     public int m_nInterval;
     public uint m_nKeyCode;
-    //public uint m_nMouseButton;
+
+    public uint m_nCursorPositionX;
+    public uint m_nCursorPositionY;
+    public MouseButtons m_nMouseButtons;
   }
 
   public enum SimulateWays
@@ -46,8 +48,8 @@ namespace KeyboardMouseSimulator
   [StructLayout(LayoutKind.Sequential)]
   public struct Position
   {
-    public long nX;
-    public long nY;
+    public int m_nX;
+    public int m_nY;
 
     //[MarshalAs(UnmanagedType.LPWStr)]
     //public string Name;
@@ -65,9 +67,9 @@ namespace KeyboardMouseSimulator
     public extern static short KeyStatus(uint nKey);
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
-    public extern static void CursorPosition(ref Position stPosition, bool bGetOrSet);
+    public extern static bool CursorPosition(ref Position stPosition, bool bGetOrSet);
 
-    
+
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static int Initialize(int nDriverType);
 
@@ -83,8 +85,8 @@ namespace KeyboardMouseSimulator
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static bool MouseUp(uint nButtons);
 
-    [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
-    public extern static bool MouseMove(ulong nX, ulong nY);
+    [DllImport(DriverFileName, EntryPoint = "MouseMove", CallingConvention = CallingConvention.StdCall)]
+    public extern static bool MouseMove(uint nX, uint nY);
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static void Uninitialize();

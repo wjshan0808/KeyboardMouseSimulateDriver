@@ -23,19 +23,20 @@ namespace KeyboardMouseSimulator
       InitializeComponent();
     }
 
+
     private void frmGlobalKeyboardSet_Load(object sender, EventArgs e)
     {
       m_bChecking = true;
 
       System.Threading.ThreadPool.QueueUserWorkItem((ojb) =>
       {
-        Position cp = new Position();
+        Position cp = new Position(); 
         while (m_bChecking)
         {
           ShowCheckout(KeyboardMouseSimulateDriverAPI.Checkout());
 
-          KeyboardMouseSimulateDriverAPI.CursorPosition(ref cp, true);
-          ShowCursorPosition(cp.nX, cp.nY);
+          KeyboardMouseSimulateDriverAPI.CursorPosition(ref cp, true); 
+          ShowCursorPosition(cp.m_nX, cp.m_nY);
 
           System.Threading.Thread.Sleep(50);
         }
@@ -56,7 +57,7 @@ namespace KeyboardMouseSimulator
     }
 
 
-    private void btnMove_Click(object sender, EventArgs e)
+    private void btnMouseOperate_Click(object sender, EventArgs e)
     {
       if (SimulateWays.Unknow == m_nSimulateWay)
       {
@@ -64,28 +65,83 @@ namespace KeyboardMouseSimulator
         return;
       }
 
-      bool bResult = false;
+      ButtonControl(btnMouseOperate, false, "Mouse\r\nOperating ...");
+
+      if (m_trdKeyboardInterval != null)
+      {
+        try
+        {
+          m_trdKeyboardInterval.Abort();
+          m_trdKeyboardInterval.Join();
+        }
+        catch (Exception ex)
+        {
+          MessageBox.Show(ex.Message);
+        }
+      }
+
+      Parameters stParameter = new Parameters();
+      stParameter.m_nCursorPositionX = (uint)nudCursorPositionY.Value;
+      stParameter.m_nCursorPositionY = (uint)nudCursorPositionX.Value;
 
       if (rdobtnMouseLeft.Checked)
-      {
-        bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.LeftDown);
-        bResult &= KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.LeftUp);
-
-        ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.LeftDown, bResult);
-      }
+        stParameter.m_nMouseButtons = KeyboardMouseSimulator.MouseButtons.LeftDown;
       else if (rdobtnMouseRight.Checked)
-      {
-        bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.RightDown);
-        bResult &= KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.RightUp);
-
-        ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.RightDown, bResult);
-      }
+        stParameter.m_nMouseButtons = KeyboardMouseSimulator.MouseButtons.RightDown;
       else
-      {
-        bResult = KeyboardMouseSimulateDriverAPI.MouseMove((ulong)nudCursorPositionX.Value, (ulong)nudCursorPositionY.Value);
+        stParameter.m_nMouseButtons = KeyboardMouseSimulator.MouseButtons.Move;
 
-        ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.Move, bResult);
+      m_trdKeyboardInterval = new System.Threading.Thread(MouseOperate);
+      m_trdKeyboardInterval.IsBackground = false;
+      m_trdKeyboardInterval.Priority = System.Threading.ThreadPriority.AboveNormal;
+      m_trdKeyboardInterval.Start(stParameter);
+    }
+
+    private void MouseOperate(object obj)
+    {
+      if (!m_bInitialized)
+      {
+        int nReturn = KeyboardMouseSimulateDriverAPI.Initialize((int)m_nSimulateWay);
+        m_bInitialized = (0 == nReturn);
+        ShowInfoBoard("Initialize", nReturn, m_bInitialized);
       }
+
+      System.Threading.Thread.Sleep(1000);
+      ShowInfoBoard("Ready...");
+      System.Threading.Thread.Sleep(1000);
+      ShowInfoBoard("Go ! ! !");
+      System.Threading.Thread.Sleep(1000);
+
+      if (m_bInitialized)
+      {
+        bool bResult = false;
+        Parameters stParameter = (Parameters)obj;
+
+        if (KeyboardMouseSimulator.MouseButtons.LeftDown == (KeyboardMouseSimulator.MouseButtons.LeftDown & stParameter.m_nMouseButtons))
+        {
+          bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.LeftDown);
+          System.Threading.Thread.Sleep(100);
+          bResult &= KeyboardMouseSimulateDriverAPI.MouseUp((uint)KeyboardMouseSimulator.MouseButtons.LeftUp);
+
+          ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.LeftDown, bResult);
+        }
+        else if (KeyboardMouseSimulator.MouseButtons.RightDown == (KeyboardMouseSimulator.MouseButtons.RightDown & stParameter.m_nMouseButtons))
+        {
+          bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.RightDown);
+          System.Threading.Thread.Sleep(100);
+          bResult &= KeyboardMouseSimulateDriverAPI.MouseUp((uint)KeyboardMouseSimulator.MouseButtons.RightUp);
+
+          ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.RightDown, bResult);
+        }
+        else //Move Checked
+        {
+          bResult = KeyboardMouseSimulateDriverAPI.MouseMove(stParameter.m_nCursorPositionX, stParameter.m_nCursorPositionY);
+
+          ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.Move, bResult);
+        }
+      }
+
+      ButtonControl(btnMouseOperate, true, "Mouse\r\nOperate");
     }
 
 
@@ -154,8 +210,8 @@ namespace KeyboardMouseSimulator
           DateTime dtStart = DateTime.Now;
           while (stParameter.m_nDuration > (DateTime.Now - dtStart).TotalSeconds)
           {
-            ShowInfoBoard(-nTimes, KeyboardMouseSimulateDriverAPI.KeyDown(stParameter.m_nKeyCode));
-            ShowInfoBoard(-nTimes++, KeyboardMouseSimulateDriverAPI.KeyUp(stParameter.m_nKeyCode));
+            ShowInfoBoard(nTimes, KeyboardMouseSimulateDriverAPI.KeyDown(stParameter.m_nKeyCode));
+            ShowInfoBoard(nTimes++, KeyboardMouseSimulateDriverAPI.KeyUp(stParameter.m_nKeyCode));
 
             System.Threading.Thread.Sleep(stParameter.m_nInterval);
           }
@@ -197,12 +253,21 @@ namespace KeyboardMouseSimulator
     }
 
 
-    private void ShowCursorPosition(long nX, long nY)
+    private void Test_SetCursorPosition()
+    {
+      Position cp = new Position();
+      cp.m_nX = (int)nudCursorPositionX.Value;
+      cp.m_nY = (int)nudCursorPositionY.Value;
+      KeyboardMouseSimulateDriverAPI.CursorPosition(ref cp, false); 
+    }
+
+
+    private void ShowCursorPosition(int nX, int nY)
     {
       if (lblCurrentCursorPositionXY.InvokeRequired)
-        lblCurrentCursorPositionXY.Invoke(new Action<long, long>(ShowCursorPosition), nX, nY);
+        lblCurrentCursorPositionXY.Invoke(new Action<int, int>(ShowCursorPosition), nX, nY);
       else
-        lblCurrentCursorPositionXY.Text = string.Format("X:{0}\r\n\r\nY:{0}", nX, nY);
+        lblCurrentCursorPositionXY.Text = string.Format("X:{0}\r\n\r\nY:{1}", nX, nY);
     }
 
     private void ShowCheckout(ulong nCheckout)
