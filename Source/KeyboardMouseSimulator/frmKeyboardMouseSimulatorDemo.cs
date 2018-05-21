@@ -30,12 +30,12 @@ namespace KeyboardMouseSimulator
 
       System.Threading.ThreadPool.QueueUserWorkItem((ojb) =>
       {
-        Position cp = new Position(); 
+        Position cp = new Position();
         while (m_bChecking)
         {
           ShowCheckout(KeyboardMouseSimulateDriverAPI.Checkout());
 
-          KeyboardMouseSimulateDriverAPI.CursorPosition(ref cp, true); 
+          KeyboardMouseSimulateDriverAPI.CursorPosition(ref cp, true);
           ShowCursorPosition(cp.m_nX, cp.m_nY);
 
           System.Threading.Thread.Sleep(50);
@@ -60,7 +60,7 @@ namespace KeyboardMouseSimulator
     private void btnMouseOperate_Click(object sender, EventArgs e)
     {
       if (SimulateWays.Unknow == m_nSimulateWay)
-      { 
+      {
         ShowInfoBoard("请右键菜单选择模拟方式...");
         return;
       }
@@ -110,7 +110,7 @@ namespace KeyboardMouseSimulator
       ShowInfoBoard("Ready...");
       System.Threading.Thread.Sleep(1000);
       ShowInfoBoard("Go ! ! !");
-      System.Threading.Thread.Sleep(256);
+      System.Threading.Thread.Sleep(1000);
 
       if (m_bInitialized)
       {
@@ -120,7 +120,6 @@ namespace KeyboardMouseSimulator
         if (KeyboardMouseSimulator.MouseButtons.LeftDown == (KeyboardMouseSimulator.MouseButtons.LeftDown & stParameter.m_nMouseButtons))
         {
           bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.LeftDown);
-          System.Threading.Thread.Sleep(100);
           bResult &= KeyboardMouseSimulateDriverAPI.MouseUp((uint)KeyboardMouseSimulator.MouseButtons.LeftUp);
 
           ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.LeftDown, bResult);
@@ -128,7 +127,6 @@ namespace KeyboardMouseSimulator
         else if (KeyboardMouseSimulator.MouseButtons.RightDown == (KeyboardMouseSimulator.MouseButtons.RightDown & stParameter.m_nMouseButtons))
         {
           bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.RightDown);
-          System.Threading.Thread.Sleep(100);
           bResult &= KeyboardMouseSimulateDriverAPI.MouseUp((uint)KeyboardMouseSimulator.MouseButtons.RightUp);
 
           ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.RightDown, bResult);
@@ -193,9 +191,9 @@ namespace KeyboardMouseSimulator
         int nReturn = KeyboardMouseSimulateDriverAPI.Initialize((int)m_nSimulateWay);
         m_bInitialized = (0 == nReturn);
         ShowInfoBoard("Initialize", nReturn, m_bInitialized);
+        System.Threading.Thread.Sleep(1000);
       }
 
-      System.Threading.Thread.Sleep(1000);
       ShowInfoBoard("Ready...");
       System.Threading.Thread.Sleep(1000);
       ShowInfoBoard("Go ! ! !");
@@ -258,7 +256,7 @@ namespace KeyboardMouseSimulator
       Position cp = new Position();
       cp.m_nX = (int)nudCursorPositionX.Value;
       cp.m_nY = (int)nudCursorPositionY.Value;
-      KeyboardMouseSimulateDriverAPI.CursorPosition(ref cp, false); 
+      KeyboardMouseSimulateDriverAPI.CursorPosition(ref cp, false);
     }
 
 
