@@ -401,10 +401,10 @@ void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
 
   if ((MOUSEEVENTF_MOVE & nButton) && (MOUSEEVENTF_ABSOLUTE & nButton))
   {
-    //POINT dest = { nX, nY };
-    //CursorPosition(dest, false);
-    //nX = 0;
-    //nY = 0;
+    POINT dest = { nX, nY };
+    CursorPosition(dest, true);
+    nX -= dest.x;
+    nY -= dest.y;
   }
 
   //Destination
@@ -412,7 +412,7 @@ void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
   int nDestY = (std::abs(nY) & 0x00FF);
 
   if (nX < 0)//左
-  { //向左移  
+  {  
     g_nMouseMetaData |= 0x10;
     nDestX = (~nDestX + 1);//补码(取反+1)
   }
@@ -430,7 +430,7 @@ void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
     g_nMouseMetaData |= 0x20;
     nDestY = (~nDestY + 1);//补码(取反+1)
   }
-
+  
   switch (nButton)
   {
   case MOUSEEVENTF_LEFTDOWN:

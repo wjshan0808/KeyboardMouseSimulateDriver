@@ -19,7 +19,6 @@ waitMouseOutputEmpty = function(){
      B = ReadPortValue(0x64);
    } while( (B & 0x20) && (B & 0x01) ); //如果标志位是1,则等待
 }
-
 waitMouseOutputFull = function(){
    var B;
    do{
@@ -35,7 +34,6 @@ waitKeyOutputEmpty = function(){
      B = ReadPortValue(0x64);
    } while(B & 0x01); //如果标志位是1,则等待
 }
-
 waitKeyOutputFull = function(){
    var B;
    do{
@@ -56,7 +54,6 @@ waitInputEmpty = function(){
      B = ReadPortValue(0x64);
    }while(B & 0x02);
 }
-
 //下面这个函数在任何时候都不应当用
 waitInputFull = function(){
    var B;
@@ -72,14 +69,6 @@ waitInputFull = function(){
 		通过64h端口对8042发布的命令的返回结果。
 	在向60h端口读取数据之前必须确保Output Register中有数据（通过判断Status Register的Bit-0是否为1）。
 */
-waitOutputFull = function() {
-   var B;
-   do{
-    sleep(0);  
-     B = ReadPortValue(0x64);
-   }while( !(B & 0x01) ); //这里千万不能用sleep 不然永远不能返回，因为被系统键盘驱动清空了
-}
-
 waitOutputEmpty = function(){
    var B;
    do{
@@ -87,6 +76,13 @@ waitOutputEmpty = function(){
      B = ReadPortValue(0x64);
    }while( (B & 0x01) );
 } 
+waitOutputFull = function() {
+   var B;
+   do{
+    sleep(0);  
+     B = ReadPortValue(0x64);
+   }while( !(B & 0x01) ); //这里千万不能用sleep 不然永远不能返回，因为被系统键盘驱动清空了
+}
  
 //异步，不论有没有等到按键都返回值，成功返回true，失败返回false  
 waitMouseOutputFullAsyn = function(){
