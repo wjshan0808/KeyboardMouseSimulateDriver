@@ -56,6 +56,8 @@
       this.rdobtnMouseRight = new System.Windows.Forms.RadioButton();
       this.rdobtnMouseLeft = new System.Windows.Forms.RadioButton();
       this.ttTips = new System.Windows.Forms.ToolTip(this.components);
+      this.chkbxAbsolute = new System.Windows.Forms.CheckBox();
+      this.chkbxRelative = new System.Windows.Forms.CheckBox();
       ((System.ComponentModel.ISupportInitialize)(this.nudIntervalMS)).BeginInit();
       this.gbKeyboard.SuspendLayout();
       this.cmsSimulateWayMenu.SuspendLayout();
@@ -149,6 +151,7 @@
       this.gbKeyboard.TabIndex = 6;
       this.gbKeyboard.TabStop = false;
       this.gbKeyboard.Text = "eg. Keyboard";
+      this.ttTips.SetToolTip(this.gbKeyboard, "Event\'s The Best Option");
       // 
       // cmsSimulateWayMenu
       // 
@@ -283,6 +286,8 @@
       // 
       this.gbMouse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.gbMouse.ContextMenuStrip = this.cmsSimulateWayMenu;
+      this.gbMouse.Controls.Add(this.chkbxRelative);
+      this.gbMouse.Controls.Add(this.chkbxAbsolute);
       this.gbMouse.Controls.Add(this.rdobtnMouseMove);
       this.gbMouse.Controls.Add(this.btnMouseOperate);
       this.gbMouse.Controls.Add(this.nudCursorPositionY);
@@ -305,7 +310,7 @@
       // 
       this.rdobtnMouseMove.AutoSize = true;
       this.rdobtnMouseMove.Checked = true;
-      this.rdobtnMouseMove.Location = new System.Drawing.Point(116, 27);
+      this.rdobtnMouseMove.Location = new System.Drawing.Point(213, 27);
       this.rdobtnMouseMove.Margin = new System.Windows.Forms.Padding(2);
       this.rdobtnMouseMove.Name = "rdobtnMouseMove";
       this.rdobtnMouseMove.Size = new System.Drawing.Size(47, 16);
@@ -317,11 +322,11 @@
       // 
       // btnMouseOperate
       // 
-      this.btnMouseOperate.Location = new System.Drawing.Point(193, 60);
+      this.btnMouseOperate.Location = new System.Drawing.Point(202, 79);
       this.btnMouseOperate.Name = "btnMouseOperate";
-      this.btnMouseOperate.Size = new System.Drawing.Size(92, 46);
+      this.btnMouseOperate.Size = new System.Drawing.Size(80, 29);
       this.btnMouseOperate.TabIndex = 10;
-      this.btnMouseOperate.Text = "Mouse\r\nOperate";
+      this.btnMouseOperate.Text = "Mouse\r\n";
       this.btnMouseOperate.UseVisualStyleBackColor = true;
       this.btnMouseOperate.Click += new System.EventHandler(this.btnMouseOperate_Click);
       // 
@@ -333,14 +338,14 @@
             0,
             0,
             0});
+      this.nudCursorPositionY.Minimum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            -2147483648});
       this.nudCursorPositionY.Name = "nudCursorPositionY";
       this.nudCursorPositionY.Size = new System.Drawing.Size(71, 21);
       this.nudCursorPositionY.TabIndex = 8;
-      this.nudCursorPositionY.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
       // 
       // nudCursorPositionX
       // 
@@ -350,14 +355,14 @@
             0,
             0,
             0});
+      this.nudCursorPositionX.Minimum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            -2147483648});
       this.nudCursorPositionX.Name = "nudCursorPositionX";
       this.nudCursorPositionX.Size = new System.Drawing.Size(71, 21);
       this.nudCursorPositionX.TabIndex = 7;
-      this.nudCursorPositionX.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
       // 
       // lblNewCursorPositionY
       // 
@@ -389,7 +394,7 @@
       // rdobtnMouseRight
       // 
       this.rdobtnMouseRight.AutoSize = true;
-      this.rdobtnMouseRight.Location = new System.Drawing.Point(213, 27);
+      this.rdobtnMouseRight.Location = new System.Drawing.Point(115, 27);
       this.rdobtnMouseRight.Margin = new System.Windows.Forms.Padding(2);
       this.rdobtnMouseRight.Name = "rdobtnMouseRight";
       this.rdobtnMouseRight.Size = new System.Drawing.Size(53, 16);
@@ -413,6 +418,32 @@
       this.ttTips.AutoPopDelay = 5000;
       this.ttTips.InitialDelay = 100;
       this.ttTips.ReshowDelay = 100;
+      // 
+      // chkbxAbsolute
+      // 
+      this.chkbxAbsolute.AutoSize = true;
+      this.chkbxAbsolute.Checked = true;
+      this.chkbxAbsolute.CheckState = System.Windows.Forms.CheckState.Checked;
+      this.chkbxAbsolute.Location = new System.Drawing.Point(202, 53);
+      this.chkbxAbsolute.Name = "chkbxAbsolute";
+      this.chkbxAbsolute.Size = new System.Drawing.Size(30, 16);
+      this.chkbxAbsolute.TabIndex = 12;
+      this.chkbxAbsolute.Text = "A";
+      this.ttTips.SetToolTip(this.chkbxAbsolute, "Absolute Move");
+      this.chkbxAbsolute.UseVisualStyleBackColor = true;
+      this.chkbxAbsolute.Click += new System.EventHandler(this.chkbxAbsolute_Click);
+      // 
+      // chkbxRelative
+      // 
+      this.chkbxRelative.AutoSize = true;
+      this.chkbxRelative.Location = new System.Drawing.Point(252, 53);
+      this.chkbxRelative.Name = "chkbxRelative";
+      this.chkbxRelative.Size = new System.Drawing.Size(30, 16);
+      this.chkbxRelative.TabIndex = 13;
+      this.chkbxRelative.Text = "R";
+      this.ttTips.SetToolTip(this.chkbxRelative, "Relative Move");
+      this.chkbxRelative.UseVisualStyleBackColor = true;
+      this.chkbxRelative.Click += new System.EventHandler(this.chkbxRelative_Click);
       // 
       // frmKeyboardMouseSimulatorDemo
       // 
@@ -480,6 +511,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiSimulateWayWinRing0;
         private System.Windows.Forms.RadioButton rdobtnMouseMove;
         private System.Windows.Forms.ToolTip ttTips;
+        private System.Windows.Forms.CheckBox chkbxRelative;
+        private System.Windows.Forms.CheckBox chkbxAbsolute;
     }
 }
 

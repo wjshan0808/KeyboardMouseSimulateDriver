@@ -65,7 +65,7 @@ namespace KeyboardMouseSimulator
         return;
       }
 
-      ButtonControl(btnMouseOperate, false, "Mouse\r\nOperating ...");
+      ButtonControl(btnMouseOperate, false, "Operating ...");
 
       if (m_trdKeyboardInterval != null)
       {
@@ -81,8 +81,8 @@ namespace KeyboardMouseSimulator
       }
 
       Parameters stParameter = new Parameters();
-      stParameter.m_nCursorPositionX = (uint)nudCursorPositionX.Value;
-      stParameter.m_nCursorPositionY = (uint)nudCursorPositionY.Value;
+      stParameter.m_nCursorPositionX = (int)nudCursorPositionX.Value;
+      stParameter.m_nCursorPositionY = (int)nudCursorPositionY.Value;
 
       if (rdobtnMouseLeft.Checked)
         stParameter.m_nMouseButtons = KeyboardMouseSimulator.MouseButtons.LeftDown;
@@ -101,7 +101,7 @@ namespace KeyboardMouseSimulator
     {
       if (!m_bInitialized)
       {
-        int nReturn = KeyboardMouseSimulateDriverAPI.Initialize((int)m_nSimulateWay);
+        int nReturn = KeyboardMouseSimulateDriverAPI.Initialize((uint)m_nSimulateWay);
         m_bInitialized = (0 == nReturn);
         ShowInfoBoard("Initialize", nReturn, m_bInitialized);
         System.Threading.Thread.Sleep(1000);
@@ -133,13 +133,16 @@ namespace KeyboardMouseSimulator
         }
         else //Move Checked
         {
-          bResult = KeyboardMouseSimulateDriverAPI.MouseMove(stParameter.m_nCursorPositionX, stParameter.m_nCursorPositionY);
+          if (chkbxAbsolute.Checked)
+            bResult = KeyboardMouseSimulateDriverAPI.MouseMove(stParameter.m_nCursorPositionX, stParameter.m_nCursorPositionY, true);
+          else if (chkbxRelative.Checked)
+            bResult = KeyboardMouseSimulateDriverAPI.MouseMove(stParameter.m_nCursorPositionX, stParameter.m_nCursorPositionY, false);
 
           ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.Move, bResult);
         }
       }
 
-      ButtonControl(btnMouseOperate, true, "Mouse\r\nOperate");
+      ButtonControl(btnMouseOperate, true, "Mouse");
     }
 
 
@@ -188,7 +191,7 @@ namespace KeyboardMouseSimulator
     {
       if (!m_bInitialized)
       {
-        int nReturn = KeyboardMouseSimulateDriverAPI.Initialize((int)m_nSimulateWay);
+        int nReturn = KeyboardMouseSimulateDriverAPI.Initialize((uint)m_nSimulateWay);
         m_bInitialized = (0 == nReturn);
         ShowInfoBoard("Initialize", nReturn, m_bInitialized);
         System.Threading.Thread.Sleep(1000);
@@ -211,7 +214,8 @@ namespace KeyboardMouseSimulator
             ShowInfoBoard(nTimes, KeyboardMouseSimulateDriverAPI.KeyDown(stParameter.m_nKeyCode));
             ShowInfoBoard(nTimes++, KeyboardMouseSimulateDriverAPI.KeyUp(stParameter.m_nKeyCode));
 
-            System.Threading.Thread.Sleep(stParameter.m_nInterval);
+            if (0 < stParameter.m_nInterval)
+              System.Threading.Thread.Sleep(stParameter.m_nInterval);
           }
         }
       }
@@ -392,6 +396,18 @@ namespace KeyboardMouseSimulator
       }
       //ToolStripMenuItem
       tsmiItem.Checked = true;
+    }
+
+    private void chkbxAbsolute_Click(object sender, EventArgs e)
+    {
+      CheckBox cb = sender as CheckBox;
+      chkbxRelative.Checked = !(cb.Checked = cb.Checked);
+    }
+
+    private void chkbxRelative_Click(object sender, EventArgs e)
+    {
+      CheckBox cb = sender as CheckBox;
+      chkbxAbsolute.Checked = !(cb.Checked = cb.Checked);
     }
   }
 }

@@ -12,7 +12,8 @@
 #include <conio.h>
 #include <Windows.h>
 
-
+///SELECT * FROM Win32_Keyboard
+///SELECT * FROM Win32_PointingDevice
 //https://wiki.osdev.org/%228042%22_PS/2_Controller
 //https://wiki.osdev.org/PS/2_Mouse
 //https://wiki.osdev.org/PS/2_Keyboard
@@ -33,18 +34,20 @@
 typedef BOOL(WINAPI *PFN_IsWow64Process)(HANDLE hProcess, PBOOL bIsWow64Process);
 typedef UINT(WINAPI *PFN_GetSystemWow64Directory)(LPTSTR szBuffer, UINT nBufferSize);
 
+
 //
-#define KEYBOARD_CMD     0x64
-#define KEYBOARD_DATA    0x60
-#define MOUSE_META_DATA  0x08
+#define KEYBOARD_CMD     0x64               //键盘命令端口
+#define KEYBOARD_DATA    0x60               //键盘数据端口
+#define MOUSE_METADATA   0x08               //鼠标元数据
 
 
-int g_nDriverType = 0;    //驱动加载类型
-bool g_bIs64Bits = false;
-bool g_bMouseWheel = false;
-unsigned int g_nMouseMetaData = MOUSE_META_DATA;
-wchar_t g_szDriverId[MAX_PATH] = { 0 };
-
+//
+unsigned int g_nDriverType = 0;             //驱动加载类型
+bool g_bIs64Bits = false;                   //系统信息
+bool g_bMouseWheel = false;                 //鼠标滚轮
+wchar_t g_szDriverId[MAX_PATH] = { 0 };     //驱动ID
+HANDLE g_hDriver = INVALID_HANDLE_VALUE;    //驱动
+//unsigned int g_nMouseMetaData = MOUSE_METADATA;
 
 
 #pragma region Utilities
@@ -98,15 +101,17 @@ bool _stdcall Is64Bits()
 #endif
 }
 
+long long _stdcall Checkout()
+{
+  return (std::time(nullptr) + 60 * 60 * 8);
+}
+
 short _stdcall KeyStatus(unsigned int nKey)
 {
   //https://msdn.microsoft.com/zh-cn/library/ms646301.aspx
   return GetKeyState(nKey);
 }
 
-/*
- *  bGetOrSet : True->Get, False->Set
- */
 bool _stdcall CursorPosition(POINT &stPosition, bool bGetOrSet)
 {
   //Set mouse speed, see https://msdn.microsoft.com/en-us/library/ms724947(v=vs.85).aspx
@@ -126,17 +131,10 @@ bool _stdcall CursorPosition(POINT &stPosition, bool bGetOrSet)
   return bResult == TRUE ? true : false;
 }
 
-long long _stdcall Checkout()
-{
-  return (std::time(nullptr) + 60 * 60 * 8);
-}
-
 #pragma endregion
 
 
-#pragma region Driver
-
-HANDLE g_hDriver = INVALID_HANDLE_VALUE;
+#pragma region Interface
 
 BOOL _stdcall ReadPortValue(HANDLE pHandle, WORD nAddress, PDWORD pValue, BYTE nSize = MAPVK_VSC_TO_VK)
 {
@@ -241,23 +239,48 @@ BOOL _stdcall WritePortValue(HANDLE pHandle, WORD nAddress, DWORD nValue, BYTE n
     return false;
 }
 
-void _stdcall KBCWait4IBE(HANDLE pHandle)
+void _stdcall TillIBF(HANDLE pHandle)
 {
   DWORD nValue = 0;
   do
   {
     ReadPortValue(pHandle, KEYBOARD_CMD, &nValue);
-  } while (nValue & 0x02);
+  } while (0x02 & nValue); //写数据前等待Iutput Register Empty, Bit:1 = 0
+  //} while (!(0x02 & nValue)); //读数据前等待Iutput Register Full, Bit:1 = 1
 }
 
-void _stdcall KBCWait4OBF(HANDLE pHandle)
+void _stdcall TillOBF(HANDLE pHandle)
 {
   DWORD nValue = 0;
   do
   {
     ReadPortValue(pHandle, KEYBOARD_CMD, &nValue);
-  } while ((nValue & 0x20) && (nValue & 0x01));
+  } while (0x01 & nValue); //写数据前等待Output Register Empty, Bit:0 = 0
+  //} while (!(0x01 & nValue)); //读数据前等待Output Register Full, Bit:0 = 0
 }
+
+void _stdcall MBCTillOBF(HANDLE pHandle)
+{
+  DWORD nValue = 0;
+  do
+  {
+    ReadPortValue(pHandle, KEYBOARD_CMD, &nValue);
+  } while ((0x20 & nValue) && (0x01 & nValue)); //Empty
+  //} while (!(0x20 & nValue) || !(0x01 & nValue)); //Full
+}
+
+void _stdcall KBCTillOBF(HANDLE pHandle)
+{
+  DWORD nValue = 0;
+  do
+  {
+    ReadPortValue(pHandle, KEYBOARD_CMD, &nValue);
+  } while (0x01 & nValue); //写数据前等待Output Register Empty, Bit:0 = 0
+  //} while ((0x20 & nValue) || !(0x01 & nValue)); //读数据前等待Output Register Full, Bit:0 = 0
+}
+
+#pragma endregion
+
 
 
 void _stdcall Uninitialize()
@@ -288,10 +311,16 @@ void _stdcall Uninitialize()
   g_hDriver = INVALID_HANDLE_VALUE;
 }
 
+
+void _stdcall KeyboardEnable(bool bEnable)
+{
+  TillIBF(g_hDriver);
+  WritePortValue(g_hDriver, KEYBOARD_CMD, bEnable ? 0xAE : 0xAD);
+}
+
 bool _stdcall KeyDown(unsigned int nKey)
 {
   BOOL bResult = true;
-  //Keydown 
   //https://msdn.microsoft.com/en-us/library/ms646306(VS.85).aspx
   unsigned int nMapVirtualKey = MapVirtualKey(nKey, MAPVK_VK_TO_VSC);
 
@@ -302,19 +331,23 @@ bool _stdcall KeyDown(unsigned int nKey)
   }
   else
   {
-    KBCWait4IBE(g_hDriver);
-    //0xD2准备写数据到Output Register中
+    KBCTillOBF(g_hDriver);
+
+    //TillIBF(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);      
+
+    //TillIBF(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0xE2); // 0x60); // 
+
+    TillIBF(g_hDriver);
     bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
-    KBCWait4IBE(g_hDriver);
-    //0x60将写入到Input Register的字节放入到Output Register中，
-    bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0xE2); // 0x60); //
-
-    KBCWait4IBE(g_hDriver);
-    bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
-
-    KBCWait4IBE(g_hDriver);
+    TillIBF(g_hDriver);
     bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey);
+
+    //TillIBF(g_hDriver);
+
+    //KBCTillOBF(g_hDriver);
   }
 
   return bResult ? true : false;
@@ -323,7 +356,6 @@ bool _stdcall KeyDown(unsigned int nKey)
 bool _stdcall KeyUp(unsigned int nKey)
 {
   BOOL bResult = true;
-  //Keyup
   //https://msdn.microsoft.com/en-us/library/ms646306(VS.85).aspx
   unsigned int nMapVirtualKey = MapVirtualKey(nKey, MAPVK_VK_TO_VSC);
 
@@ -334,124 +366,125 @@ bool _stdcall KeyUp(unsigned int nKey)
   }
   else
   {
-    KBCWait4IBE(g_hDriver);
+    KBCTillOBF(g_hDriver);
+
+    //TillIBF(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
+
+    //TillIBF(g_hDriver);
+    //bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0xE0); // 0x60); //
+
+    TillIBF(g_hDriver);
     bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
 
-    KBCWait4IBE(g_hDriver);
-    bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, 0xE0); // 0x60); //
-
-    KBCWait4IBE(g_hDriver);
-    bResult &= WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD2);
-
-    KBCWait4IBE(g_hDriver);
+    TillIBF(g_hDriver);
     bResult &= WritePortValue(g_hDriver, KEYBOARD_DATA, nMapVirtualKey | 0x80);
+
+    //TillIBF(g_hDriver);
+
+    //KBCTillOBF(g_hDriver);
   }
 
   return bResult ? true : false;
 }
 
 
-bool _stdcall MouseWheel()
+void _stdcall MouseEnable(bool bEnable)
 {
-  return (2 < GetSystemMetrics(SM_CMOUSEBUTTONS)) && (0 != GetSystemMetrics(SM_MOUSEWHEELPRESENT));
+  TillIBF(g_hDriver);
+  WritePortValue(g_hDriver, KEYBOARD_CMD, bEnable ? 0xA8 : 0xA7);
 }
 
-bool _stdcall MouseControl(unsigned int nButton, unsigned int nX, unsigned int nY)
+void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
 {
-  //unsigned int nMouseMetaData = 0x08;
+  unsigned int g_nMouseMetaData = MOUSE_METADATA;
 
-  nX = (std::abs((int)nX) & 0xFF);
-  nY = (std::abs((int)nY) & 0xFF);
-
-
-  if (nX < 0)
+  if ((MOUSEEVENTF_MOVE & nButton) && (MOUSEEVENTF_ABSOLUTE & nButton))
   {
-    g_nMouseMetaData |= 0x10;
-    nX = (~nX + 1);//补码(取反+1)
+    //POINT dest = { nX, nY };
+    //CursorPosition(dest, false);
+    //nX = 0;
+    //nY = 0;
   }
-  else
+
+  //Destination
+  int nDestX = (std::abs(nX) & 0x00FF);
+  int nDestY = (std::abs(nY) & 0x00FF);
+
+  if (nX < 0)//左
+  { //向左移  
+    g_nMouseMetaData |= 0x10;
+    nDestX = (~nDestX + 1);//补码(取反+1)
+  }
+  else//右
   {
     g_nMouseMetaData &= ~0x10;
   }
 
-  if (nY <= 0)
+  if (nY <= 0)//上
   {
     g_nMouseMetaData &= ~0x20;
   }
-  else
+  else//下
   {
     g_nMouseMetaData |= 0x20;
-    nY = (~nY + 1);//补码(取反+1)
+    nDestY = (~nDestY + 1);//补码(取反+1)
   }
 
-  //  Move = 0x0001,
-  //  LeftDown = 0x0002,
-  //  LeftUp = 0x0004,
-  //  RightDown = 0x0008,
-  //  RightUp = 0x0010,
-  //  MiddleDown = 0x0020,
-  //  MiddleUp = 0x0040,
-  //  XDown = 0x0080,
-  //  XUp = 0x0100,
-  //  Wheel = 0x0800,
-  //  VirtualDesk = 0x4000,
-  //  Absolute = 0x8000
   switch (nButton)
   {
-  case 0x0002:
-    g_nMouseMetaData |= 0x01;
+  case MOUSEEVENTF_LEFTDOWN:
+    g_nMouseMetaData |= 0x01; //= 0x09;
     break;
-  case 0x0004:
-    g_nMouseMetaData &= ~0x01;
+  case MOUSEEVENTF_LEFTUP:
+    g_nMouseMetaData &= ~0x01; //= 0x08;
     break;
-  case 0x0008:
-    g_nMouseMetaData |= 0x02;
+  case MOUSEEVENTF_RIGHTDOWN:
+    g_nMouseMetaData |= 0x02; //= 0x0A;
     break;
-  case 0x0010:
-    g_nMouseMetaData &= ~0x02;
+  case MOUSEEVENTF_RIGHTUP:
+    g_nMouseMetaData &= ~0x02; //= 0x08;
     break;
-  case 0x0020:
-    g_nMouseMetaData |= 0x04;
+  case MOUSEEVENTF_MIDDLEDOWN:
+    g_nMouseMetaData |= 0x04; //= 0x0C;
     break;
-  case 0x0040:
-    g_nMouseMetaData &= ~0x04;
+  case MOUSEEVENTF_MIDDLEUP:
+    g_nMouseMetaData &= ~0x04; //= 0x08;
+    break;
+  case MOUSEEVENTF_XDOWN:
+    break;
+  case MOUSEEVENTF_XUP:
+    break;
+  case MOUSEEVENTF_WHEEL:
     break;
   }
 
-  KBCWait4OBF(g_hDriver);
-
-  KBCWait4IBE(g_hDriver);
+  MBCTillOBF(g_hDriver);
+  TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
-  KBCWait4IBE(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, g_nMouseMetaData); // 0x09
+  TillIBF(g_hDriver);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, g_nMouseMetaData);
 
-  KBCWait4OBF(g_hDriver);
-
-  KBCWait4IBE(g_hDriver);
+  //MBCTillOBF(g_hDriver);
+  TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
-  KBCWait4IBE(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, nX);
+  TillIBF(g_hDriver);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, nDestX);
 
-  KBCWait4OBF(g_hDriver);
-
-  KBCWait4IBE(g_hDriver);
+  //MBCTillOBF(g_hDriver);
+  TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
-  KBCWait4IBE(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, nY);
+  TillIBF(g_hDriver);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, nDestY);
 
-  KBCWait4OBF(g_hDriver);
-
-  if (MouseWheel())
+  if (g_bMouseWheel)
   {
-    KBCWait4IBE(g_hDriver);
+    //MBCTillOBF(g_hDriver);
+    TillIBF(g_hDriver);
     WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
-    KBCWait4IBE(g_hDriver);
+    TillIBF(g_hDriver);
     WritePortValue(g_hDriver, KEYBOARD_DATA, 0x00);
-
-    KBCWait4OBF(g_hDriver);
   }
-
-  return true;
 }
 
 bool _stdcall MouseDown(unsigned int nButtons)
@@ -463,7 +496,7 @@ bool _stdcall MouseDown(unsigned int nButtons)
   }
   else
   {
-    MouseControl(nButtons, 0x00, 0x00);
+    MouseControl(nButtons);
   }
 
   return true;
@@ -478,38 +511,65 @@ bool _stdcall MouseUp(unsigned int nButtons)
   }
   else
   {
-    MouseControl(nButtons, 0x00, 0x00);
+    MouseControl(nButtons);
   }
 
   return true;
 }
 
-/*
-* About Parameters x & y
-* mouse move is between [0, 65535];
-* if you want to move by logical pixels of desktop,
-* you need caculate map between (x / MaxXPixelsOfDesktop * 65535) or (y / MaxYPixelsOfDesktop * 65535)
-*/
-bool _stdcall MouseMove(unsigned int nX, unsigned int nY)
+bool _stdcall MouseMove(int nX, int nY, bool bAorR)
 {
   if (TYPE_DRIVER_EVENT == g_nDriverType)
   {
     //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
     //https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385(v=vs.85).aspx
-    mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE,
-      static_cast<unsigned int>(nX * 65535.F / GetSystemMetrics(SM_CXSCREEN)),
-      static_cast<unsigned int>(nY * 65535.F / GetSystemMetrics(SM_CYSCREEN)),
+    mouse_event((bAorR ? (MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE) : (MOUSEEVENTF_MOVE)),
+      static_cast<unsigned long>(nX * 65535.F / GetSystemMetrics(SM_CXSCREEN)), //mouse move is between [0, 65535]
+      static_cast<unsigned long>(nY * 65535.F / GetSystemMetrics(SM_CYSCREEN)), //move by logical pixels of desktop
       0, 0);
   }
   else
   {
-    MouseControl(0x00, nX, nY);
+    MouseControl((bAorR ? (MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE) : (MOUSEEVENTF_MOVE)),
+      nX, nY);
   }
 
   return true;
 }
 
-int _stdcall Initialize(int nDriverType)
+bool _stdcall MouseWheel()
+{
+  return (2 < GetSystemMetrics(SM_CMOUSEBUTTONS)) && (0 != GetSystemMetrics(SM_MOUSEWHEELPRESENT));
+}
+
+void _stdcall Interrupt(bool bEnable)
+{
+  KeyboardEnable(false);
+  MouseEnable(false);
+  
+  TillIBF(g_hDriver);
+  WritePortValue(g_hDriver, KEYBOARD_CMD, 0x20);
+
+  TillIBF(g_hDriver);
+  DWORD nValue = 0;
+  ReadPortValue(g_hDriver, KEYBOARD_DATA, &nValue);
+
+  if (bEnable)
+    nValue |= 0x01;
+  else
+    nValue &= ~0x01;
+  
+  TillIBF(g_hDriver);
+  WritePortValue(g_hDriver, KEYBOARD_CMD, 0x60);
+
+  TillIBF(g_hDriver);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, nValue);
+
+  KeyboardEnable(true);
+  MouseEnable(true);
+}
+
+int _stdcall Initialize(unsigned int nDriverType)
 {
   g_nDriverType = nDriverType;
 
@@ -559,19 +619,19 @@ int _stdcall Initialize(int nDriverType)
           wcscat_s(szModuleFileName, NAME_FILE32_WINRING0);
       }
       else
-        return  -2;
+        return -2;
 
     }
 
     if (!CServiceControlManager::Create(szModuleFileName, g_szDriverId))
-      return -3;
+      return GetLastError();
     if (!CServiceControlManager::Start(g_szDriverId))
-      return -4;
+      return GetLastError();
   }
 
   g_hDriver = CreateFile(szDriverFile, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   if (INVALID_HANDLE_VALUE == g_hDriver)
-    return -5;
+    return GetLastError();
 
   // Enable I/O port access for this process if running on a 32 bit OS
   if (TYPE_DRIVER_WINIO == g_nDriverType)
@@ -586,6 +646,4 @@ int _stdcall Initialize(int nDriverType)
 
   return 0;
 }
-
-#pragma endregion
 

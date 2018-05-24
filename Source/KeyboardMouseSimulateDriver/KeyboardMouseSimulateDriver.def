@@ -1,13 +1,19 @@
 LIBRARY "KeyboardMouseSimulateDriver"
 
 EXPORTS
+ Is64Bits @ 11
  Checkout @ 1
  CursorPosition @ 3
  Initialize @ 4
+ KeyboardEnable @ 14
  KeyStatus @ 2
  KeyDown @ 5
  KeyUp @ 6
  MouseMove @ 9
  MouseDown @ 7
  MouseUp @ 8
+ MouseWheel @ 12
+ MouseEnable @ 13
  Uninitialize @ 10
+ Interrupt @ 15
+

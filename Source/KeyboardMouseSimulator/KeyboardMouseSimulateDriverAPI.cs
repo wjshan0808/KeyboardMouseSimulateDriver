@@ -7,7 +7,7 @@ using System.Text;
 namespace KeyboardMouseSimulator
 {
   /// <summary>
-  /// 
+  /// 检测委托
   /// </summary>
   /// <returns></returns>
   public delegate ulong CheckoutDeletage();
@@ -15,7 +15,7 @@ namespace KeyboardMouseSimulator
   /// <summary>
   /// 鼠标按键
   /// </summary>
-  public enum MouseButtons
+  public enum MouseButtons : uint
   {
     Move = 0x0001,
     LeftDown = 0x0002,
@@ -41,15 +41,15 @@ namespace KeyboardMouseSimulator
     public int m_nInterval;
     public uint m_nKeyCode;
 
-    public uint m_nCursorPositionX;
-    public uint m_nCursorPositionY;
+    public int m_nCursorPositionX;
+    public int m_nCursorPositionY;
     public MouseButtons m_nMouseButtons;
   }
 
   /// <summary>
   /// 模拟方式
   /// </summary>
-  public enum SimulateWays
+  public enum SimulateWays : uint
   {
     Unknow = 0x00,
     WinRing0 = 0x01,
@@ -79,6 +79,9 @@ namespace KeyboardMouseSimulator
 
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
+    public extern static bool Is64Bits();
+
+    [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static ulong Checkout();
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
@@ -89,7 +92,7 @@ namespace KeyboardMouseSimulator
 
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
-    public extern static int Initialize(int nDriverType);
+    public extern static int Initialize(uint nDriverType);
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static bool KeyDown(uint nKey);
@@ -98,13 +101,26 @@ namespace KeyboardMouseSimulator
     public extern static bool KeyUp(uint nKey);
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
+    public extern static void KeyboardEnable(bool bEnable);
+
+    [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
+    public extern static void MouseWheel();
+
+    [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
+    public extern static void MouseEnable(bool bEnable);
+
+    [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static bool MouseDown(uint nButtons);
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static bool MouseUp(uint nButtons);
 
     [DllImport(DriverFileName, EntryPoint = "MouseMove", CallingConvention = CallingConvention.StdCall)]
-    public extern static bool MouseMove(uint nX, uint nY);
+    public extern static bool MouseMove(int nX, int nY, bool bAorR);
+
+
+    [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
+    public extern static void Interrupt(bool bEnable);
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static void Uninitialize();
