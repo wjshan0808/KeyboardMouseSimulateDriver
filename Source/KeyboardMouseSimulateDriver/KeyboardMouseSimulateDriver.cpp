@@ -8,6 +8,7 @@
 #include <ctime>
 #include <cmath>
 #include <cstddef>
+#include <iostream>
 
 #include <conio.h>
 #include <Windows.h>
@@ -47,7 +48,7 @@ bool g_bIs64Bits = false;                   //系统信息
 bool g_bMouseWheel = false;                 //鼠标滚轮
 wchar_t g_szDriverId[MAX_PATH] = { 0 };     //驱动ID
 HANDLE g_hDriver = INVALID_HANDLE_VALUE;    //驱动
-//unsigned int g_nMouseMetaData = MOUSE_METADATA;
+//unsigned char g_nMouseMetaData = MOUSE_METADATA;
 
 
 #pragma region Utilities
@@ -397,68 +398,75 @@ void _stdcall MouseEnable(bool bEnable)
 /*
 鼠标数据
 第一个字节
-    7 y溢出标志
-    6 x溢出标志
-    5 y信号位
-    4 x信号位
-    3 这个位总是1,也就是 0x08
-    2 鼠标中键
-    1 鼠标右键
-    0 鼠标左键
+7 y溢出标志
+6 x溢出标志
+5 y信号位
+4 x信号位
+3 这个位总是1,也就是 0x08
+2 鼠标中键
+1 鼠标右键
+0 鼠标左键
 第二个字节 x位移
 第三个字节 y位移
 */
 void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
 {
-  unsigned int g_nMouseMetaData = MOUSE_METADATA;
+  unsigned char g_nMouseMetaData = MOUSE_METADATA;
 
   if (MOUSEEVENTF_MOVE & nButton)
   {
     if (MOUSEEVENTF_ABSOLUTE & nButton)
     {
       //Current Cursor Position
-      POINT stCurrent;
-      CursorPosition(stCurrent, true);
+      //POINT stCurrent;
+      //CursorPosition(stCurrent, true);
 
-      if (stCurrent.x >= nX) 
-        nX = -(stCurrent.x - nX); 
-      else 
-        nX = (nX - stCurrent.x); 
+      //if (stCurrent.x >= nX) 
+      //  nX = -(stCurrent.x - nX); 
+      //else 
+      //  nX = (nX - stCurrent.x); 
 
-      if (stCurrent.y >= nY) 
-        nY = -(stCurrent.y - nY); 
-      else 
-        nY = (nY - stCurrent.y); 
+      //if (stCurrent.y >= nY) 
+      //  nY = -(stCurrent.y - nY); 
+      //else 
+      //  nY = (nY - stCurrent.y); 
     }
   }
 
+  //Move
   //Destination
-  int nDestX = (std::abs(nX) & 0xFFFF);
-  int nDestY = (std::abs(nY) & 0xFFFF);
+  unsigned char nDestX = (std::abs(nX) & 0xFF);
+  unsigned char nDestY = (std::abs(nY) & 0xFF);
+  //上
+  if (nY <= 0)
+  {
+    //Move up one 0x08, 0x00, 0x01
+    g_nMouseMetaData &= ~0x20;
+  }
+  //下
+  else
+  {
+    //Move down one 0x28, 0x00, 0xFF
+    g_nMouseMetaData |= 0x20;
+    nDestY = (~nDestY + 1);//补码(取反+1)
+  }
   //左
   if (nX < 0)
   {
+    //Move left one 0x18, 0xFF, 0x00
     g_nMouseMetaData |= 0x10;
     nDestX = (~nDestX + 1);//补码(取反+1)
   }
   //右
   else
   {
+    //Move right one 0x08, 0x01, 0x00
     g_nMouseMetaData &= ~0x10;
   }
-  //上
-  if (nY <= 0)
-  {
-    g_nMouseMetaData &= ~0x20;
-  }
-  //下
-  else
-  {
-    g_nMouseMetaData |= 0x20;
-    nDestY = (~nDestY + 1);//补码(取反+1)
-  }
-  //Move 
-  //
+  static int i = 1;
+  std::cout << i++ << " " << (int)nDestX << " " << (int)nDestY << std::endl;
+
+  //Click
   switch (nButton)
   {
   case MOUSEEVENTF_LEFTDOWN:
@@ -491,23 +499,23 @@ void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
   TillIBF(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, 0x08);// g_nMouseMetaData);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, g_nMouseMetaData);
 
-  //MBCTillOBF(g_hDriver);
+  MBCTillOBF(g_hDriver);
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
   TillIBF(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, nX);// nDestX);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, nDestX);
 
-  //MBCTillOBF(g_hDriver);
+  MBCTillOBF(g_hDriver);
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
   TillIBF(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, nY);// nDestY);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, nDestY);
 
   if (g_bMouseWheel)
   {
-    //MBCTillOBF(g_hDriver);
+    MBCTillOBF(g_hDriver);
     TillIBF(g_hDriver);
     WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
     TillIBF(g_hDriver);
@@ -563,8 +571,8 @@ bool _stdcall MouseMove(int nX, int nY, bool bAorR)
   else
   {
     MouseControl((bAorR ? (MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE) : (MOUSEEVENTF_MOVE)),
-      static_cast<int>(nDestX), static_cast<int>(nDestY));
-      //nX, nY);
+      //static_cast<int>(nDestX), static_cast<int>(nDestY));
+      nX, nY);
   }
 
   return true;

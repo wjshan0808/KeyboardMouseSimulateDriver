@@ -24,6 +24,7 @@ namespace KeyboardMouseSimulatorDemo
 
     private void frmGlobalKeyboardSet_Load(object sender, EventArgs e)
     {
+      //MessageBox.Show(KeyboardMouseSimulateDriverAPI.MouseWheel().ToString());
       m_bChecking = true;
 
       System.Threading.ThreadPool.QueueUserWorkItem((ojb) =>

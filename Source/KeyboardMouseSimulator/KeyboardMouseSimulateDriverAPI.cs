@@ -104,7 +104,7 @@ namespace KeyboardMouseSimulatorDemo
     public extern static void KeyboardEnable(bool bEnable);
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
-    public extern static void MouseWheel();
+    public extern static bool MouseWheel();
 
     [DllImport(DriverFileName, CallingConvention = CallingConvention.StdCall)]
     public extern static void MouseEnable(bool bEnable);
