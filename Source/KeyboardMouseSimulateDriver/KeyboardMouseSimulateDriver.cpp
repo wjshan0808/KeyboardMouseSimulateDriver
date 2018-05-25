@@ -394,25 +394,47 @@ void _stdcall MouseEnable(bool bEnable)
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, bEnable ? 0xA8 : 0xA7);
 }
-
+/*
+鼠标数据
+第一个字节
+    7 y溢出标志
+    6 x溢出标志
+    5 y信号位
+    4 x信号位
+    3 这个位总是1,也就是 0x08
+    2 鼠标中键
+    1 鼠标右键
+    0 鼠标左键
+第二个字节 x位移
+第三个字节 y位移
+*/
 void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
 {
   unsigned int g_nMouseMetaData = MOUSE_METADATA;
 
   if (MOUSEEVENTF_MOVE & nButton)
   {
-    POINT dest;
-    CursorPosition(dest, false);
     if (MOUSEEVENTF_ABSOLUTE & nButton)
     {
-      //nX -= dest.x;
-      //nY -= dest.y;
+      //Current Cursor Position
+      POINT stCurrent;
+      CursorPosition(stCurrent, true);
+
+      if (stCurrent.x >= nX) 
+        nX = -(stCurrent.x - nX); 
+      else 
+        nX = (nX - stCurrent.x); 
+
+      if (stCurrent.y >= nY) 
+        nY = -(stCurrent.y - nY); 
+      else 
+        nY = (nY - stCurrent.y); 
     }
   }
 
   //Destination
-  int nDestX = (std::abs(nX) & 0x00FF);
-  int nDestY = (std::abs(nY) & 0x00FF);
+  int nDestX = (std::abs(nX) & 0xFFFF);
+  int nDestY = (std::abs(nY) & 0xFFFF);
   //左
   if (nX < 0)
   {
@@ -435,7 +457,8 @@ void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
     g_nMouseMetaData |= 0x20;
     nDestY = (~nDestY + 1);//补码(取反+1)
   }
-
+  //Move 
+  //
   switch (nButton)
   {
   case MOUSEEVENTF_LEFTDOWN:
@@ -468,19 +491,19 @@ void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
   TillIBF(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, g_nMouseMetaData);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, 0x08);// g_nMouseMetaData);
 
   //MBCTillOBF(g_hDriver);
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
   TillIBF(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, nDestX);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, nX);// nDestX);
 
   //MBCTillOBF(g_hDriver);
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0xD3);
   TillIBF(g_hDriver);
-  WritePortValue(g_hDriver, KEYBOARD_DATA, nDestY);
+  WritePortValue(g_hDriver, KEYBOARD_DATA, nY);// nDestY);
 
   if (g_bMouseWheel)
   {
@@ -541,6 +564,7 @@ bool _stdcall MouseMove(int nX, int nY, bool bAorR)
   {
     MouseControl((bAorR ? (MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE) : (MOUSEEVENTF_MOVE)),
       static_cast<int>(nDestX), static_cast<int>(nDestY));
+      //nX, nY);
   }
 
   return true;
