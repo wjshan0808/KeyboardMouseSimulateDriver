@@ -534,8 +534,7 @@ bool _stdcall MouseMove(int nX, int nY, bool bAorR)
     //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
     //https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385(v=vs.85).aspx
     mouse_event((bAorR ? (MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE) : (MOUSEEVENTF_MOVE)),
-      static_cast<unsigned long>(nDestX),
-      static_cast<unsigned long>(nDestY),
+      static_cast<unsigned long>(nDestX), static_cast<unsigned long>(nDestY),
       0, 0);
   }
   else
