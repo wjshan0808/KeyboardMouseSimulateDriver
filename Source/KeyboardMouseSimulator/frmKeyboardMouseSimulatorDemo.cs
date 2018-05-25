@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace KeyboardMouseSimulator
+namespace KeyboardMouseSimulatorDemo
 {
   public partial class frmKeyboardMouseSimulatorDemo : Form
   {
@@ -85,11 +83,11 @@ namespace KeyboardMouseSimulator
       stParameter.m_nCursorPositionY = (int)nudCursorPositionY.Value;
 
       if (rdobtnMouseLeft.Checked)
-        stParameter.m_nMouseButtons = KeyboardMouseSimulator.MouseButtons.LeftDown;
+        stParameter.m_nMouseButtons = KeyboardMouseSimulatorDemo.MouseButtons.LeftDown;
       else if (rdobtnMouseRight.Checked)
-        stParameter.m_nMouseButtons = KeyboardMouseSimulator.MouseButtons.RightDown;
+        stParameter.m_nMouseButtons = KeyboardMouseSimulatorDemo.MouseButtons.RightDown;
       else
-        stParameter.m_nMouseButtons = KeyboardMouseSimulator.MouseButtons.Move;
+        stParameter.m_nMouseButtons = KeyboardMouseSimulatorDemo.MouseButtons.Move;
 
       m_trdKeyboardInterval = new System.Threading.Thread(MouseOperate);
       m_trdKeyboardInterval.IsBackground = false;
@@ -117,19 +115,19 @@ namespace KeyboardMouseSimulator
         bool bResult = false;
         Parameters stParameter = (Parameters)obj;
 
-        if (KeyboardMouseSimulator.MouseButtons.LeftDown == (KeyboardMouseSimulator.MouseButtons.LeftDown & stParameter.m_nMouseButtons))
+        if (KeyboardMouseSimulatorDemo.MouseButtons.LeftDown == (KeyboardMouseSimulatorDemo.MouseButtons.LeftDown & stParameter.m_nMouseButtons))
         {
-          bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.LeftDown);
-          bResult &= KeyboardMouseSimulateDriverAPI.MouseUp((uint)KeyboardMouseSimulator.MouseButtons.LeftUp);
+          bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulatorDemo.MouseButtons.LeftDown);
+          bResult &= KeyboardMouseSimulateDriverAPI.MouseUp((uint)KeyboardMouseSimulatorDemo.MouseButtons.LeftUp);
 
-          ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.LeftDown, bResult);
+          ShowInfoBoard(KeyboardMouseSimulatorDemo.MouseButtons.LeftDown, bResult);
         }
-        else if (KeyboardMouseSimulator.MouseButtons.RightDown == (KeyboardMouseSimulator.MouseButtons.RightDown & stParameter.m_nMouseButtons))
+        else if (KeyboardMouseSimulatorDemo.MouseButtons.RightDown == (KeyboardMouseSimulatorDemo.MouseButtons.RightDown & stParameter.m_nMouseButtons))
         {
-          bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulator.MouseButtons.RightDown);
-          bResult &= KeyboardMouseSimulateDriverAPI.MouseUp((uint)KeyboardMouseSimulator.MouseButtons.RightUp);
+          bResult = KeyboardMouseSimulateDriverAPI.MouseDown((uint)KeyboardMouseSimulatorDemo.MouseButtons.RightDown);
+          bResult &= KeyboardMouseSimulateDriverAPI.MouseUp((uint)KeyboardMouseSimulatorDemo.MouseButtons.RightUp);
 
-          ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.RightDown, bResult);
+          ShowInfoBoard(KeyboardMouseSimulatorDemo.MouseButtons.RightDown, bResult);
         }
         else //Move Checked
         {
@@ -138,7 +136,7 @@ namespace KeyboardMouseSimulator
           else if (chkbxRelative.Checked)
             bResult = KeyboardMouseSimulateDriverAPI.MouseMove(stParameter.m_nCursorPositionX, stParameter.m_nCursorPositionY, false);
 
-          ShowInfoBoard(KeyboardMouseSimulator.MouseButtons.Move, bResult);
+          ShowInfoBoard(KeyboardMouseSimulatorDemo.MouseButtons.Move, bResult);
         }
       }
 
@@ -300,32 +298,32 @@ namespace KeyboardMouseSimulator
       ShowInfoBoard(strResult, bResult);
     }
 
-    private void ShowInfoBoard(KeyboardMouseSimulator.MouseButtons nMouseButton, bool bResult)
+    private void ShowInfoBoard(KeyboardMouseSimulatorDemo.MouseButtons nMouseButton, bool bResult)
     {
       string strResult = string.Empty;
 
       switch (nMouseButton)
       {
-        case KeyboardMouseSimulator.MouseButtons.LeftDown:
-        case KeyboardMouseSimulator.MouseButtons.LeftUp:
+        case KeyboardMouseSimulatorDemo.MouseButtons.LeftDown:
+        case KeyboardMouseSimulatorDemo.MouseButtons.LeftUp:
           strResult = string.Format("Simulate Mouse '{0}' Button", "Left");
           break;
-        case KeyboardMouseSimulator.MouseButtons.RightDown:
-        case KeyboardMouseSimulator.MouseButtons.RightUp:
+        case KeyboardMouseSimulatorDemo.MouseButtons.RightDown:
+        case KeyboardMouseSimulatorDemo.MouseButtons.RightUp:
           strResult = string.Format("Simulate Mouse '{0}' Button", "Right");
           break;
-        case KeyboardMouseSimulator.MouseButtons.MiddleDown:
-        case KeyboardMouseSimulator.MouseButtons.MiddleUp:
+        case KeyboardMouseSimulatorDemo.MouseButtons.MiddleDown:
+        case KeyboardMouseSimulatorDemo.MouseButtons.MiddleUp:
           strResult = string.Format("Simulate Mouse '{0}' Button", "Middle");
           break;
-        case KeyboardMouseSimulator.MouseButtons.XDown:
-        case KeyboardMouseSimulator.MouseButtons.XUp:
+        case KeyboardMouseSimulatorDemo.MouseButtons.XDown:
+        case KeyboardMouseSimulatorDemo.MouseButtons.XUp:
           strResult = string.Format("Simulate Mouse '{0}' Button", "X");
           break;
-        case KeyboardMouseSimulator.MouseButtons.Wheel:
+        case KeyboardMouseSimulatorDemo.MouseButtons.Wheel:
           strResult = string.Format("Simulate Mouse '{0}'", "Wheel");
           break;
-        case KeyboardMouseSimulator.MouseButtons.Move:
+        case KeyboardMouseSimulatorDemo.MouseButtons.Move:
           strResult = string.Format("Simulate Mouse '{0}'", "Move");
           break;
       }

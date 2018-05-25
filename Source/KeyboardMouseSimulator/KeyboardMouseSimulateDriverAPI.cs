@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace KeyboardMouseSimulator
+namespace KeyboardMouseSimulatorDemo
 {
   /// <summary>
   /// 检测委托

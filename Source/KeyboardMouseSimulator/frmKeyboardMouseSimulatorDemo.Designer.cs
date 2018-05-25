@@ -1,4 +1,4 @@
-﻿namespace KeyboardMouseSimulator
+﻿namespace KeyboardMouseSimulatorDemo
 {
     partial class frmKeyboardMouseSimulatorDemo
     {
