@@ -399,38 +399,43 @@ void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
 {
   unsigned int g_nMouseMetaData = MOUSE_METADATA;
 
-  if ((MOUSEEVENTF_MOVE & nButton) && (MOUSEEVENTF_ABSOLUTE & nButton))
+  if (MOUSEEVENTF_MOVE & nButton)
   {
-    POINT dest = { nX, nY };
-    CursorPosition(dest, true);
-    nX -= dest.x;
-    nY -= dest.y;
+    POINT dest;
+    CursorPosition(dest, false);
+    if (MOUSEEVENTF_ABSOLUTE & nButton)
+    {
+      //nX -= dest.x;
+      //nY -= dest.y;
+    }
   }
 
   //Destination
   int nDestX = (std::abs(nX) & 0x00FF);
   int nDestY = (std::abs(nY) & 0x00FF);
-
-  if (nX < 0)//左
-  {  
+  //左
+  if (nX < 0)
+  {
     g_nMouseMetaData |= 0x10;
     nDestX = (~nDestX + 1);//补码(取反+1)
   }
-  else//右
+  //右
+  else
   {
     g_nMouseMetaData &= ~0x10;
   }
-
-  if (nY <= 0)//上
+  //上
+  if (nY <= 0)
   {
     g_nMouseMetaData &= ~0x20;
   }
-  else//下
+  //下
+  else
   {
     g_nMouseMetaData |= 0x20;
     nDestY = (~nDestY + 1);//补码(取反+1)
   }
-  
+
   switch (nButton)
   {
   case MOUSEEVENTF_LEFTDOWN:
@@ -519,19 +524,24 @@ bool _stdcall MouseUp(unsigned int nButtons)
 
 bool _stdcall MouseMove(int nX, int nY, bool bAorR)
 {
+  //mouse move is between [0, 65535]
+  //move by logical pixels of desktop
+  double nDestX = nX * 65535.F / GetSystemMetrics(SM_CXSCREEN);
+  double nDestY = nY * 65535.F / GetSystemMetrics(SM_CYSCREEN);
+
   if (TYPE_DRIVER_EVENT == g_nDriverType)
   {
     //https://msdn.microsoft.com/en-us/library/ms646260(VS.85).aspx
     //https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385(v=vs.85).aspx
     mouse_event((bAorR ? (MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE) : (MOUSEEVENTF_MOVE)),
-      static_cast<unsigned long>(nX * 65535.F / GetSystemMetrics(SM_CXSCREEN)), //mouse move is between [0, 65535]
-      static_cast<unsigned long>(nY * 65535.F / GetSystemMetrics(SM_CYSCREEN)), //move by logical pixels of desktop
+      static_cast<unsigned long>(nDestX),
+      static_cast<unsigned long>(nDestY),
       0, 0);
   }
   else
   {
     MouseControl((bAorR ? (MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE) : (MOUSEEVENTF_MOVE)),
-      nX, nY);
+      static_cast<int>(nDestX), static_cast<int>(nDestY));
   }
 
   return true;
@@ -546,7 +556,7 @@ void _stdcall Interrupt(bool bEnable)
 {
   KeyboardEnable(false);
   MouseEnable(false);
-  
+
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0x20);
 
@@ -558,7 +568,7 @@ void _stdcall Interrupt(bool bEnable)
     nValue |= 0x01;
   else
     nValue &= ~0x01;
-  
+
   TillIBF(g_hDriver);
   WritePortValue(g_hDriver, KEYBOARD_CMD, 0x60);
 
