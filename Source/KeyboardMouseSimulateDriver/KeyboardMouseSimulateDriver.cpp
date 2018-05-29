@@ -277,7 +277,7 @@ void _stdcall KBCTillOBF(HANDLE pHandle)
   {
     ReadPortValue(pHandle, KEYBOARD_CMD, &nValue);
   } while (0x01 & nValue); //写数据前等待Output Register Empty, Bit:0 = 0
-  //} while ((0x20 & nValue) || !(0x01 & nValue)); //读数据前等待Output Register Full, Bit:0 = 0
+  //} while ((0x20 & nValue) || !(0x01 & nValue)); //读数据前等待Output Register Full, Bit:0 = 0, Bit:1 = 1
 }
 
 #pragma endregion
@@ -463,8 +463,6 @@ void _stdcall MouseControl(unsigned int nButton, int nX = 0x00, int nY = 0x00)
     //Move right one 0x08, 0x01, 0x00
     g_nMouseMetaData &= ~0x10;
   }
-  static int i = 1;
-  std::cout << i++ << " " << (int)nDestX << " " << (int)nDestY << std::endl;
 
   //Click
   switch (nButton)

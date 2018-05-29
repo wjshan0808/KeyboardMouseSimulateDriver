@@ -46,6 +46,8 @@
       this.lblDuration = new System.Windows.Forms.Label();
       this.nudDurationS = new System.Windows.Forms.NumericUpDown();
       this.gbMouse = new System.Windows.Forms.GroupBox();
+      this.chkbxRelative = new System.Windows.Forms.CheckBox();
+      this.chkbxAbsolute = new System.Windows.Forms.CheckBox();
       this.rdobtnMouseMove = new System.Windows.Forms.RadioButton();
       this.btnMouseOperate = new System.Windows.Forms.Button();
       this.nudCursorPositionY = new System.Windows.Forms.NumericUpDown();
@@ -56,8 +58,6 @@
       this.rdobtnMouseRight = new System.Windows.Forms.RadioButton();
       this.rdobtnMouseLeft = new System.Windows.Forms.RadioButton();
       this.ttTips = new System.Windows.Forms.ToolTip(this.components);
-      this.chkbxAbsolute = new System.Windows.Forms.CheckBox();
-      this.chkbxRelative = new System.Windows.Forms.CheckBox();
       ((System.ComponentModel.ISupportInitialize)(this.nudIntervalMS)).BeginInit();
       this.gbKeyboard.SuspendLayout();
       this.cmsSimulateWayMenu.SuspendLayout();
@@ -71,10 +71,10 @@
       // btnSimulate
       // 
       this.btnSimulate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnSimulate.Location = new System.Drawing.Point(316, 195);
-      this.btnSimulate.Margin = new System.Windows.Forms.Padding(2);
+      this.btnSimulate.Location = new System.Drawing.Point(421, 244);
+      this.btnSimulate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.btnSimulate.Name = "btnSimulate";
-      this.btnSimulate.Size = new System.Drawing.Size(105, 33);
+      this.btnSimulate.Size = new System.Drawing.Size(140, 41);
       this.btnSimulate.TabIndex = 0;
       this.btnSimulate.Text = "Simulate";
       this.btnSimulate.UseVisualStyleBackColor = true;
@@ -84,10 +84,10 @@
       // 
       this.rdobtnKeyO.AutoSize = true;
       this.rdobtnKeyO.Checked = true;
-      this.rdobtnKeyO.Location = new System.Drawing.Point(18, 27);
-      this.rdobtnKeyO.Margin = new System.Windows.Forms.Padding(2);
+      this.rdobtnKeyO.Location = new System.Drawing.Point(24, 34);
+      this.rdobtnKeyO.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.rdobtnKeyO.Name = "rdobtnKeyO";
-      this.rdobtnKeyO.Size = new System.Drawing.Size(65, 16);
+      this.rdobtnKeyO.Size = new System.Drawing.Size(84, 19);
       this.rdobtnKeyO.TabIndex = 2;
       this.rdobtnKeyO.TabStop = true;
       this.rdobtnKeyO.Text = "Key [O]";
@@ -96,10 +96,10 @@
       // rdobtnKeyG
       // 
       this.rdobtnKeyG.AutoSize = true;
-      this.rdobtnKeyG.Location = new System.Drawing.Point(213, 27);
-      this.rdobtnKeyG.Margin = new System.Windows.Forms.Padding(2);
+      this.rdobtnKeyG.Location = new System.Drawing.Point(284, 34);
+      this.rdobtnKeyG.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.rdobtnKeyG.Name = "rdobtnKeyG";
-      this.rdobtnKeyG.Size = new System.Drawing.Size(65, 16);
+      this.rdobtnKeyG.Size = new System.Drawing.Size(84, 19);
       this.rdobtnKeyG.TabIndex = 3;
       this.rdobtnKeyG.Text = "Key [G]";
       this.rdobtnKeyG.UseVisualStyleBackColor = true;
@@ -110,10 +110,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.lblCheckout.Font = new System.Drawing.Font("宋体", 10F);
       this.lblCheckout.ForeColor = System.Drawing.SystemColors.ControlText;
-      this.lblCheckout.Location = new System.Drawing.Point(9, 6);
-      this.lblCheckout.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+      this.lblCheckout.Location = new System.Drawing.Point(12, 8);
       this.lblCheckout.Name = "lblCheckout";
-      this.lblCheckout.Size = new System.Drawing.Size(412, 16);
+      this.lblCheckout.Size = new System.Drawing.Size(549, 20);
       this.lblCheckout.TabIndex = 4;
       this.lblCheckout.Text = "Checkout";
       this.lblCheckout.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -121,8 +120,8 @@
       // nudIntervalMS
       // 
       this.nudIntervalMS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.nudIntervalMS.Location = new System.Drawing.Point(316, 156);
-      this.nudIntervalMS.Margin = new System.Windows.Forms.Padding(2);
+      this.nudIntervalMS.Location = new System.Drawing.Point(421, 195);
+      this.nudIntervalMS.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.nudIntervalMS.Maximum = new decimal(new int[] {
             600,
             0,
@@ -130,7 +129,7 @@
             0});
       this.nudIntervalMS.Name = "nudIntervalMS";
       this.nudIntervalMS.ReadOnly = true;
-      this.nudIntervalMS.Size = new System.Drawing.Size(105, 21);
+      this.nudIntervalMS.Size = new System.Drawing.Size(140, 25);
       this.nudIntervalMS.TabIndex = 3;
       this.nudIntervalMS.Value = new decimal(new int[] {
             5,
@@ -143,15 +142,14 @@
       this.gbKeyboard.ContextMenuStrip = this.cmsSimulateWayMenu;
       this.gbKeyboard.Controls.Add(this.rdobtnKeyG);
       this.gbKeyboard.Controls.Add(this.rdobtnKeyO);
-      this.gbKeyboard.Location = new System.Drawing.Point(9, 44);
-      this.gbKeyboard.Margin = new System.Windows.Forms.Padding(2);
+      this.gbKeyboard.Location = new System.Drawing.Point(12, 55);
+      this.gbKeyboard.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.gbKeyboard.Name = "gbKeyboard";
-      this.gbKeyboard.Padding = new System.Windows.Forms.Padding(2);
-      this.gbKeyboard.Size = new System.Drawing.Size(295, 60);
+      this.gbKeyboard.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+      this.gbKeyboard.Size = new System.Drawing.Size(393, 75);
       this.gbKeyboard.TabIndex = 6;
       this.gbKeyboard.TabStop = false;
       this.gbKeyboard.Text = "eg. Keyboard";
-      this.ttTips.SetToolTip(this.gbKeyboard, "Event\'s The Best Option");
       // 
       // cmsSimulateWayMenu
       // 
@@ -161,13 +159,13 @@
             this.tsmiSimulateWayWinIO,
             this.tsmiSimulateWayWinRing0});
       this.cmsSimulateWayMenu.Name = "cmsGlobalMenu";
-      this.cmsSimulateWayMenu.Size = new System.Drawing.Size(132, 70);
+      this.cmsSimulateWayMenu.Size = new System.Drawing.Size(149, 76);
       // 
       // tsmiSimulateWayEvent
       // 
       this.tsmiSimulateWayEvent.CheckOnClick = true;
       this.tsmiSimulateWayEvent.Name = "tsmiSimulateWayEvent";
-      this.tsmiSimulateWayEvent.Size = new System.Drawing.Size(131, 22);
+      this.tsmiSimulateWayEvent.Size = new System.Drawing.Size(148, 24);
       this.tsmiSimulateWayEvent.Text = "Event";
       this.tsmiSimulateWayEvent.Click += new System.EventHandler(this.tsmiSimulateWayEvent_Click);
       // 
@@ -175,7 +173,7 @@
       // 
       this.tsmiSimulateWayWinIO.CheckOnClick = true;
       this.tsmiSimulateWayWinIO.Name = "tsmiSimulateWayWinIO";
-      this.tsmiSimulateWayWinIO.Size = new System.Drawing.Size(131, 22);
+      this.tsmiSimulateWayWinIO.Size = new System.Drawing.Size(148, 24);
       this.tsmiSimulateWayWinIO.Text = "WinIO";
       this.tsmiSimulateWayWinIO.Click += new System.EventHandler(this.tsmiSimulateWayWinIO_Click);
       // 
@@ -183,7 +181,7 @@
       // 
       this.tsmiSimulateWayWinRing0.CheckOnClick = true;
       this.tsmiSimulateWayWinRing0.Name = "tsmiSimulateWayWinRing0";
-      this.tsmiSimulateWayWinRing0.Size = new System.Drawing.Size(131, 22);
+      this.tsmiSimulateWayWinRing0.Size = new System.Drawing.Size(148, 24);
       this.tsmiSimulateWayWinRing0.Text = "WinRing0";
       this.tsmiSimulateWayWinRing0.Click += new System.EventHandler(this.tsmiSimulateWayWinRing0_Click);
       // 
@@ -191,10 +189,9 @@
       // 
       this.lblInterval.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.lblInterval.AutoSize = true;
-      this.lblInterval.Location = new System.Drawing.Point(314, 141);
-      this.lblInterval.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+      this.lblInterval.Location = new System.Drawing.Point(419, 176);
       this.lblInterval.Name = "lblInterval";
-      this.lblInterval.Size = new System.Drawing.Size(77, 12);
+      this.lblInterval.Size = new System.Drawing.Size(103, 15);
       this.lblInterval.TabIndex = 7;
       this.lblInterval.Text = "Interval(ms)";
       // 
@@ -203,10 +200,9 @@
       this.lblInfoBoard.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.lblInfoBoard.ForeColor = System.Drawing.Color.Red;
-      this.lblInfoBoard.Location = new System.Drawing.Point(9, 26);
-      this.lblInfoBoard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+      this.lblInfoBoard.Location = new System.Drawing.Point(12, 32);
       this.lblInfoBoard.Name = "lblInfoBoard";
-      this.lblInfoBoard.Size = new System.Drawing.Size(412, 16);
+      this.lblInfoBoard.Size = new System.Drawing.Size(549, 20);
       this.lblInfoBoard.TabIndex = 999;
       this.lblInfoBoard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
@@ -214,18 +210,17 @@
       // 
       this.lblPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.lblPeriod.AutoSize = true;
-      this.lblPeriod.Location = new System.Drawing.Point(314, 46);
-      this.lblPeriod.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+      this.lblPeriod.Location = new System.Drawing.Point(419, 58);
       this.lblPeriod.Name = "lblPeriod";
-      this.lblPeriod.Size = new System.Drawing.Size(41, 12);
+      this.lblPeriod.Size = new System.Drawing.Size(55, 15);
       this.lblPeriod.TabIndex = 10;
       this.lblPeriod.Text = "Period";
       // 
       // nudPeriod
       // 
       this.nudPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.nudPeriod.Location = new System.Drawing.Point(316, 62);
-      this.nudPeriod.Margin = new System.Windows.Forms.Padding(2);
+      this.nudPeriod.Location = new System.Drawing.Point(421, 78);
+      this.nudPeriod.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.nudPeriod.Maximum = new decimal(new int[] {
             60,
             0,
@@ -238,7 +233,7 @@
             0});
       this.nudPeriod.Name = "nudPeriod";
       this.nudPeriod.ReadOnly = true;
-      this.nudPeriod.Size = new System.Drawing.Size(105, 21);
+      this.nudPeriod.Size = new System.Drawing.Size(140, 25);
       this.nudPeriod.TabIndex = 9;
       this.nudPeriod.Value = new decimal(new int[] {
             1,
@@ -250,10 +245,9 @@
       // 
       this.lblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.lblDuration.AutoSize = true;
-      this.lblDuration.Location = new System.Drawing.Point(314, 94);
-      this.lblDuration.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+      this.lblDuration.Location = new System.Drawing.Point(419, 118);
       this.lblDuration.Name = "lblDuration";
-      this.lblDuration.Size = new System.Drawing.Size(71, 12);
+      this.lblDuration.Size = new System.Drawing.Size(95, 15);
       this.lblDuration.TabIndex = 12;
       this.lblDuration.Text = "Duration(s)";
       // 
@@ -265,8 +259,8 @@
             0,
             0,
             0});
-      this.nudDurationS.Location = new System.Drawing.Point(316, 109);
-      this.nudDurationS.Margin = new System.Windows.Forms.Padding(2);
+      this.nudDurationS.Location = new System.Drawing.Point(421, 136);
+      this.nudDurationS.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.nudDurationS.Maximum = new decimal(new int[] {
             600,
             0,
@@ -274,7 +268,7 @@
             0});
       this.nudDurationS.Name = "nudDurationS";
       this.nudDurationS.ReadOnly = true;
-      this.nudDurationS.Size = new System.Drawing.Size(105, 21);
+      this.nudDurationS.Size = new System.Drawing.Size(140, 25);
       this.nudDurationS.TabIndex = 11;
       this.nudDurationS.Value = new decimal(new int[] {
             10,
@@ -297,34 +291,62 @@
       this.gbMouse.Controls.Add(this.lblCurrentCursorPositionXY);
       this.gbMouse.Controls.Add(this.rdobtnMouseRight);
       this.gbMouse.Controls.Add(this.rdobtnMouseLeft);
-      this.gbMouse.Location = new System.Drawing.Point(9, 108);
-      this.gbMouse.Margin = new System.Windows.Forms.Padding(2);
+      this.gbMouse.Location = new System.Drawing.Point(12, 135);
+      this.gbMouse.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.gbMouse.Name = "gbMouse";
-      this.gbMouse.Padding = new System.Windows.Forms.Padding(2);
-      this.gbMouse.Size = new System.Drawing.Size(295, 120);
+      this.gbMouse.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+      this.gbMouse.Size = new System.Drawing.Size(393, 150);
       this.gbMouse.TabIndex = 13;
       this.gbMouse.TabStop = false;
       this.gbMouse.Text = "eg. Mouse";
+      // 
+      // chkbxRelative
+      // 
+      this.chkbxRelative.AutoSize = true;
+      this.chkbxRelative.Location = new System.Drawing.Point(336, 66);
+      this.chkbxRelative.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+      this.chkbxRelative.Name = "chkbxRelative";
+      this.chkbxRelative.Size = new System.Drawing.Size(37, 19);
+      this.chkbxRelative.TabIndex = 13;
+      this.chkbxRelative.Text = "R";
+      this.ttTips.SetToolTip(this.chkbxRelative, "Relative Move");
+      this.chkbxRelative.UseVisualStyleBackColor = true;
+      this.chkbxRelative.Click += new System.EventHandler(this.chkbxRelative_Click);
+      // 
+      // chkbxAbsolute
+      // 
+      this.chkbxAbsolute.AutoSize = true;
+      this.chkbxAbsolute.Checked = true;
+      this.chkbxAbsolute.CheckState = System.Windows.Forms.CheckState.Checked;
+      this.chkbxAbsolute.Location = new System.Drawing.Point(269, 66);
+      this.chkbxAbsolute.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+      this.chkbxAbsolute.Name = "chkbxAbsolute";
+      this.chkbxAbsolute.Size = new System.Drawing.Size(37, 19);
+      this.chkbxAbsolute.TabIndex = 12;
+      this.chkbxAbsolute.Text = "A";
+      this.ttTips.SetToolTip(this.chkbxAbsolute, "Absolute Move");
+      this.chkbxAbsolute.UseVisualStyleBackColor = true;
+      this.chkbxAbsolute.Click += new System.EventHandler(this.chkbxAbsolute_Click);
       // 
       // rdobtnMouseMove
       // 
       this.rdobtnMouseMove.AutoSize = true;
       this.rdobtnMouseMove.Checked = true;
-      this.rdobtnMouseMove.Location = new System.Drawing.Point(213, 27);
-      this.rdobtnMouseMove.Margin = new System.Windows.Forms.Padding(2);
+      this.rdobtnMouseMove.Location = new System.Drawing.Point(284, 34);
+      this.rdobtnMouseMove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.rdobtnMouseMove.Name = "rdobtnMouseMove";
-      this.rdobtnMouseMove.Size = new System.Drawing.Size(47, 16);
+      this.rdobtnMouseMove.Size = new System.Drawing.Size(60, 19);
       this.rdobtnMouseMove.TabIndex = 11;
       this.rdobtnMouseMove.TabStop = true;
       this.rdobtnMouseMove.Text = "Move";
-      this.ttTips.SetToolTip(this.rdobtnMouseMove, "Event: Relative Points\r\nOtherwise: Absolute Points");
       this.rdobtnMouseMove.UseVisualStyleBackColor = true;
       // 
       // btnMouseOperate
       // 
-      this.btnMouseOperate.Location = new System.Drawing.Point(202, 79);
+      this.btnMouseOperate.Location = new System.Drawing.Point(269, 99);
+      this.btnMouseOperate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
       this.btnMouseOperate.Name = "btnMouseOperate";
-      this.btnMouseOperate.Size = new System.Drawing.Size(80, 29);
+      this.btnMouseOperate.Size = new System.Drawing.Size(107, 36);
       this.btnMouseOperate.TabIndex = 10;
       this.btnMouseOperate.Text = "Mouse\r\n";
       this.btnMouseOperate.UseVisualStyleBackColor = true;
@@ -332,7 +354,8 @@
       // 
       // nudCursorPositionY
       // 
-      this.nudCursorPositionY.Location = new System.Drawing.Point(36, 85);
+      this.nudCursorPositionY.Location = new System.Drawing.Point(48, 106);
+      this.nudCursorPositionY.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
       this.nudCursorPositionY.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -344,12 +367,13 @@
             0,
             -2147483648});
       this.nudCursorPositionY.Name = "nudCursorPositionY";
-      this.nudCursorPositionY.Size = new System.Drawing.Size(71, 21);
+      this.nudCursorPositionY.Size = new System.Drawing.Size(95, 25);
       this.nudCursorPositionY.TabIndex = 8;
       // 
       // nudCursorPositionX
       // 
-      this.nudCursorPositionX.Location = new System.Drawing.Point(36, 60);
+      this.nudCursorPositionX.Location = new System.Drawing.Point(48, 75);
+      this.nudCursorPositionX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
       this.nudCursorPositionX.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -361,43 +385,46 @@
             0,
             -2147483648});
       this.nudCursorPositionX.Name = "nudCursorPositionX";
-      this.nudCursorPositionX.Size = new System.Drawing.Size(71, 21);
+      this.nudCursorPositionX.Size = new System.Drawing.Size(95, 25);
       this.nudCursorPositionX.TabIndex = 7;
       // 
       // lblNewCursorPositionY
       // 
       this.lblNewCursorPositionY.AutoSize = true;
-      this.lblNewCursorPositionY.Location = new System.Drawing.Point(16, 87);
+      this.lblNewCursorPositionY.Location = new System.Drawing.Point(21, 109);
+      this.lblNewCursorPositionY.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.lblNewCursorPositionY.Name = "lblNewCursorPositionY";
-      this.lblNewCursorPositionY.Size = new System.Drawing.Size(17, 12);
+      this.lblNewCursorPositionY.Size = new System.Drawing.Size(23, 15);
       this.lblNewCursorPositionY.TabIndex = 6;
       this.lblNewCursorPositionY.Text = "Y:";
       // 
       // lblNewCursorPositionX
       // 
       this.lblNewCursorPositionX.AutoSize = true;
-      this.lblNewCursorPositionX.Location = new System.Drawing.Point(16, 62);
+      this.lblNewCursorPositionX.Location = new System.Drawing.Point(21, 78);
+      this.lblNewCursorPositionX.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.lblNewCursorPositionX.Name = "lblNewCursorPositionX";
-      this.lblNewCursorPositionX.Size = new System.Drawing.Size(17, 12);
+      this.lblNewCursorPositionX.Size = new System.Drawing.Size(23, 15);
       this.lblNewCursorPositionX.TabIndex = 5;
       this.lblNewCursorPositionX.Text = "X:";
       // 
       // lblCurrentCursorPositionXY
       // 
-      this.lblCurrentCursorPositionXY.Location = new System.Drawing.Point(113, 60);
+      this.lblCurrentCursorPositionXY.Location = new System.Drawing.Point(151, 75);
+      this.lblCurrentCursorPositionXY.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.lblCurrentCursorPositionXY.Name = "lblCurrentCursorPositionXY";
-      this.lblCurrentCursorPositionXY.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-      this.lblCurrentCursorPositionXY.Size = new System.Drawing.Size(74, 46);
+      this.lblCurrentCursorPositionXY.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+      this.lblCurrentCursorPositionXY.Size = new System.Drawing.Size(99, 58);
       this.lblCurrentCursorPositionXY.TabIndex = 4;
       this.lblCurrentCursorPositionXY.Text = "X:\r\n\r\nY:";
       // 
       // rdobtnMouseRight
       // 
       this.rdobtnMouseRight.AutoSize = true;
-      this.rdobtnMouseRight.Location = new System.Drawing.Point(115, 27);
-      this.rdobtnMouseRight.Margin = new System.Windows.Forms.Padding(2);
+      this.rdobtnMouseRight.Location = new System.Drawing.Point(153, 34);
+      this.rdobtnMouseRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.rdobtnMouseRight.Name = "rdobtnMouseRight";
-      this.rdobtnMouseRight.Size = new System.Drawing.Size(53, 16);
+      this.rdobtnMouseRight.Size = new System.Drawing.Size(68, 19);
       this.rdobtnMouseRight.TabIndex = 3;
       this.rdobtnMouseRight.Text = "Right";
       this.rdobtnMouseRight.UseVisualStyleBackColor = true;
@@ -405,10 +432,10 @@
       // rdobtnMouseLeft
       // 
       this.rdobtnMouseLeft.AutoSize = true;
-      this.rdobtnMouseLeft.Location = new System.Drawing.Point(18, 27);
-      this.rdobtnMouseLeft.Margin = new System.Windows.Forms.Padding(2);
+      this.rdobtnMouseLeft.Location = new System.Drawing.Point(24, 34);
+      this.rdobtnMouseLeft.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.rdobtnMouseLeft.Name = "rdobtnMouseLeft";
-      this.rdobtnMouseLeft.Size = new System.Drawing.Size(47, 16);
+      this.rdobtnMouseLeft.Size = new System.Drawing.Size(60, 19);
       this.rdobtnMouseLeft.TabIndex = 2;
       this.rdobtnMouseLeft.Text = "Left";
       this.rdobtnMouseLeft.UseVisualStyleBackColor = true;
@@ -419,37 +446,11 @@
       this.ttTips.InitialDelay = 100;
       this.ttTips.ReshowDelay = 100;
       // 
-      // chkbxAbsolute
-      // 
-      this.chkbxAbsolute.AutoSize = true;
-      this.chkbxAbsolute.Checked = true;
-      this.chkbxAbsolute.CheckState = System.Windows.Forms.CheckState.Checked;
-      this.chkbxAbsolute.Location = new System.Drawing.Point(202, 53);
-      this.chkbxAbsolute.Name = "chkbxAbsolute";
-      this.chkbxAbsolute.Size = new System.Drawing.Size(30, 16);
-      this.chkbxAbsolute.TabIndex = 12;
-      this.chkbxAbsolute.Text = "A";
-      this.ttTips.SetToolTip(this.chkbxAbsolute, "Absolute Move");
-      this.chkbxAbsolute.UseVisualStyleBackColor = true;
-      this.chkbxAbsolute.Click += new System.EventHandler(this.chkbxAbsolute_Click);
-      // 
-      // chkbxRelative
-      // 
-      this.chkbxRelative.AutoSize = true;
-      this.chkbxRelative.Location = new System.Drawing.Point(252, 53);
-      this.chkbxRelative.Name = "chkbxRelative";
-      this.chkbxRelative.Size = new System.Drawing.Size(30, 16);
-      this.chkbxRelative.TabIndex = 13;
-      this.chkbxRelative.Text = "R";
-      this.ttTips.SetToolTip(this.chkbxRelative, "Relative Move");
-      this.chkbxRelative.UseVisualStyleBackColor = true;
-      this.chkbxRelative.Click += new System.EventHandler(this.chkbxRelative_Click);
-      // 
       // frmKeyboardMouseSimulatorDemo
       // 
-      this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+      this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(430, 237);
+      this.ClientSize = new System.Drawing.Size(573, 296);
       this.Controls.Add(this.gbMouse);
       this.Controls.Add(this.lblDuration);
       this.Controls.Add(this.nudDurationS);
@@ -461,7 +462,7 @@
       this.Controls.Add(this.gbKeyboard);
       this.Controls.Add(this.lblCheckout);
       this.Controls.Add(this.btnSimulate);
-      this.Margin = new System.Windows.Forms.Padding(2);
+      this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
       this.Name = "frmKeyboardMouseSimulatorDemo";
       this.ShowIcon = false;
       this.Text = "KeyboardMouseSimulatorDemo By wjshan0808";
